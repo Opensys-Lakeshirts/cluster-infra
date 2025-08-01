@@ -1,0 +1,16 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: metallb
+  namespace: metallb
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: REPLACE_ME
+      version: REPLACE_ME
+      sourceRef:
+        kind: HelmRepository
+        name: REPLACE_ME
+        namespace: flux-system
+  values: {}
