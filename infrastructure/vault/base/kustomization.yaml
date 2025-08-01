@@ -1,1 +1,9 @@
-resources: []
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - ca-secret.yaml
+  - policy-configmap.yaml
+  - role-configmap.yaml
+  - vault-init-job.yaml     
