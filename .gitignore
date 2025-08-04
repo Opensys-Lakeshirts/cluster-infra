@@ -1,0 +1,4 @@
+# Ignore ArgoCD SSH keys
+argocd/argocd-ssh
+argocd/argocd-ssh.pub
+
