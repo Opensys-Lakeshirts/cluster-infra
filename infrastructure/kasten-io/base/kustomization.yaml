@@ -2,7 +2,6 @@ resources:
   - namespace.yaml
   - sa-token.yaml
   - kasten-admin-binding.yaml
-  - kasten-s3-secret.yaml
 
 configMapGenerator:
   - name: kasten-values
