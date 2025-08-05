@@ -12,6 +12,8 @@ spec:
     helm:
       values: |
         installCRDs: true
+        admissionController:
+          generateSelfSignedCert: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kyverno
@@ -21,4 +23,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - Replace=true
 
