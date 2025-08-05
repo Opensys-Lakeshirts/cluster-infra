@@ -1,0 +1,13 @@
+controller:
+  ingressClassResource:
+    enabled: true
+    default: true
+  kind: DaemonSet
+  daemonset:
+    useHostPort: true
+  service:
+    type: ClusterIP
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true

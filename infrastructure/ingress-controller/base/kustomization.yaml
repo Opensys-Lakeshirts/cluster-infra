@@ -1,1 +1,11 @@
-resources: []
+resources:
+  - namespace.yaml
+
+helmCharts:
+  - name: kubernetes-ingress
+    repo: https://haproxytech.github.io/helm-charts
+    releaseName: haproxy-ingress
+    namespace: ingress-controller
+    version: 1.44.0
+    valuesFile: values.yaml
+
