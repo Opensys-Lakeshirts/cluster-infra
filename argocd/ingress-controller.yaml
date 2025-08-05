@@ -6,10 +6,14 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    path: infrastructure/ingress-controller/overlays/prod
-    targetRevision: HEAD
-    kustomize: {}
+    repoURL: https://haproxytech.github.io/helm-charts
+    chart: kubernetes-ingress
+    targetRevision: 1.44.0
+    helm:
+      values: |
+        controller:
+          service:
+            type: NodePort
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-controller
