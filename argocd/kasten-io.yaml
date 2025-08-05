@@ -1,4 +1,4 @@
-apiVersion: argoproj.io/v1alpha1
+piVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kasten-io
@@ -6,10 +6,11 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    targetRevision: HEAD
+    repoURL: git@github.com:4gd-Lakeshirts/cluster-infra.git
+    targetRevision: main
     path: infrastructure/kasten-io/overlays/prod
-    kustomize: {}
+    kustomize:
+      enableHelm: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kasten-io
@@ -19,5 +20,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - Replace=true
 
