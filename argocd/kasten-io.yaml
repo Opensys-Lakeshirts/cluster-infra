@@ -6,15 +6,10 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://charts.kasten.io/
-    chart: k10
-    targetRevision: 8.0.5
-    helm:
-      values: |
-        global:
-          persistence:
-            storageClass: standard
-          clusterName: onprem-cluster
+    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
+    targetRevision: HEAD
+    path: infrastructure/kasten-io/overlays/prod
+    kustomize: {}
   destination:
     server: https://kubernetes.default.svc
     namespace: kasten-io

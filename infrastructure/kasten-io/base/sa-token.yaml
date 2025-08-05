@@ -1,0 +1,9 @@
+# service-account-token.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k10-admin-token
+  namespace: kasten-io
+  annotations:
+    kubernetes.io/service-account.name: k10-admin
+type: kubernetes.io/service-account-token

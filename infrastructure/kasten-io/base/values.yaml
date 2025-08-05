@@ -1,0 +1,11 @@
+auth:
+  tokenAuth:
+    enabled: true
+
+externalGateway:
+  create: true
+  serviceType: LoadBalancer
+
+global:
+  persistence:
+    storageClass: local-path

@@ -1,2 +1,11 @@
-resources:
+bases:
   - ../../base
+
+helmCharts:
+  - name: k10
+    repo: https://charts.kasten.io
+    version: 8.0.5
+    releaseName: kasten-io
+    namespace: kasten-io
+    valuesFile: values.yaml
+
