@@ -4,4 +4,4 @@ namespace: microservices-demo  # <--- Add this line!
 resources:
   - ../../base
   - ingress.yaml
-
+  - front-end-hpa.yaml
