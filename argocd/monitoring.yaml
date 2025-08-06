@@ -29,6 +29,10 @@ spec:
                   resources:
                     requests:
                       storage: 20Gi
+            enableOTLPReceiver: false
+          service:
+            type: NodePort
+            nodePort: 30005
 
         alertmanager:
           alertmanagerSpec:
