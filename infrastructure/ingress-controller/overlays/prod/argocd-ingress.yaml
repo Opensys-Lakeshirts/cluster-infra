@@ -9,11 +9,11 @@ spec:
     - host: 192.168.101.191.nip.io
       http:
         paths:
-          - path: /
+          - path: /argo-cd
             pathType: Prefix
             backend:
               service:
                 name: argocd-server
                 port:
-                  number: 80  # <-- change this from 443 to 80
+                  number: 80
 
