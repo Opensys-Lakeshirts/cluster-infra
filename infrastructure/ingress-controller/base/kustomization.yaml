@@ -1,5 +1,6 @@
 resources:
   - namespace.yaml
+  - ingressclass.yaml
 
 helmCharts:
   - name: kubernetes-ingress

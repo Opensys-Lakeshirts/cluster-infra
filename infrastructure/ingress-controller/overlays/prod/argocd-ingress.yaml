@@ -3,12 +3,10 @@ kind: Ingress
 metadata:
   name: argocd-ingress
   namespace: argocd
-  annotations:
-    kubernetes.io/ingress.class: "haproxy"
-    haproxy.org/ssl-redirect: "false"
 spec:
+  ingressClassName: haproxy
   rules:
-    - host: 192.168.101.201.nip.io
+    - host: 192.168.101.191.nip.io
       http:
         paths:
           - path: /
@@ -17,5 +15,5 @@ spec:
               service:
                 name: argocd-server
                 port:
-                  number: 443
+                  number: 80  # <-- change this from 443 to 80
 
