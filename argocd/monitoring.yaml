@@ -18,7 +18,7 @@ spec:
               registry: quay.io
               repository: prometheus/prometheus
               tag: v2.54.1      
-              pullPolicy: IfNotPresent1
+              pullPolicy: IfNotPresent
             retention: 7d
             serviceMonitorSelectorNilUsesHelmValues: false
             storageSpec:
