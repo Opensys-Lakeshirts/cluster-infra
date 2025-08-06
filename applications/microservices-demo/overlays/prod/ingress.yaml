@@ -1,6 +1,19 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ../../base
-  - ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sock-shop-ingress
+  namespace: microservices-demo
+spec:
+  ingressClassName: haproxy
+  rules:
+    - host: microservices.192.168.101.191.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: front-end
+                port:
+                  number: 80
 
