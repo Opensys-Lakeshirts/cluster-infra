@@ -12,8 +12,14 @@ spec:
     helm:
       values: |
         controller:
+          ingressClassResource:
+            default: true
           service:
             type: NodePort
+            nodePorts:
+              http: 30080
+              https: 30443
+          hostNetwork: false
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-controller
