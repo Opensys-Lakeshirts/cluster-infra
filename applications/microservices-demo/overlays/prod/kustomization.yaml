@@ -5,3 +5,4 @@ resources:
   - ../../base
   - ingress.yaml
   - front-end-hpa.yaml
+  - front-end-nodeport.yaml
