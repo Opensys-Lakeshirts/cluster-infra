@@ -8,15 +8,16 @@ resources:
 helmCharts:
   - name: metrics-server
     repo: https://kubernetes-sigs.github.io/metrics-server/
-    version: 3.13.0           # Latest stable Helm chart
+    version: 3.13.0
     releaseName: metrics-server
     namespace: metrics-server
     valuesInline:
       image:
-        tag: v0.8.0            # Use metrics-server v0.8.0
+        tag: v0.8.0
       args:
         - --kubelet-insecure-tls
-      hostNetwork: true          
+      hostNetwork:
+        enabled: true         # ✅ This is now correct
       nodeSelector:
         "kubernetes.io/os": linux
 
