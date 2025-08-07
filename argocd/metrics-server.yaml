@@ -6,9 +6,16 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra.git
-    targetRevision: main
-    path: infrastructure/metrics-server/overlays/prod
+    repoURL: https://kubernetes-sigs.github.io/metrics-server/
+    chart: metrics-server
+    targetRevision: 3.13.0  
+    helm:
+      values: |
+        args:
+          - --kubelet-insecure-tls
+        hostNetwork: true
+        nodeSelector:
+          "kubernetes.io/os": linux
   destination:
     server: https://kubernetes.default.svc
     namespace: metrics-server
@@ -18,4 +25,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
+      - Replace=true
