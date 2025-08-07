@@ -5,4 +5,3 @@ resources:
   - ../../base
   - ingress.yaml
   - front-end-hpa.yaml
-  - network-policies
