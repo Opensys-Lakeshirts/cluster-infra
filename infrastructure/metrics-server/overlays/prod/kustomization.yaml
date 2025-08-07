@@ -1,18 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-helmCharts:
-  - name: metrics-server
-    repo: https://kubernetes-sigs.github.io/metrics-server/
-    version: 3.13.0
-    releaseName: metrics-server
-    namespace: metrics-server
-    valuesInline:
-      args:
-        - --kubelet-insecure-tls
-      nodeSelector:
-        kubernetes.io/os: linux
+namespace: metrics-server
 
 resources:
   - ../../base
-  - metrics-server-pdb.yaml
