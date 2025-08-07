@@ -27,8 +27,8 @@ kind: PriorityClass
 metadata:
   name: lakeshirts-normal
 value: 0
-globalDefault: true
-description: "Default priority class for normal application workloads"
+globalDefault: false
+description: "Priority class for normal application workloads"
 ---
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
