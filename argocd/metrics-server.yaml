@@ -6,25 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://kubernetes-sigs.github.io/metrics-server/
-    chart: metrics-server
-    targetRevision: 3.13.0
-    helm:
-      values: |
-        image:
-          tag: v0.8.0
-        args:
-          - --kubelet-insecure-tls
-          - --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
-          - --metric-resolution=15s
-        nodeSelector:
-	hostNetwork:
-    		enabled: true
-        kubernetes.io/os: linux
-        tolerations:
-          - key: "node-role.kubernetes.io/master"
-            operator: "Exists"
-            effect: "NoSchedule"
+    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra.git
+    targetRevision: main
+    path: infrastructure/metrics-server/overlays/prod
   destination:
     server: https://kubernetes.default.svc
     namespace: metrics-server
