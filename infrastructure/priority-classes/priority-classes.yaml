@@ -1,15 +1,15 @@
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
-  name: system-critical
+  name: lakeshirts-critical
 value: 1000000000
 globalDefault: false
-description: "Priority class for system critical workloads (monitoring, logging, etc.)"
+description: "Priority class for critical Lakeshirts workloads (monitoring, logging, etc.)"
 ---
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
-  name: infrastructure-critical
+  name: lakeshirts-infrastructure
 value: 900000000
 globalDefault: false
 description: "Priority class for critical infrastructure workloads (ingress, cert-manager, etc.)"
@@ -17,7 +17,7 @@ description: "Priority class for critical infrastructure workloads (ingress, cer
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
-  name: application-high
+  name: lakeshirts-high
 value: 800000000
 globalDefault: false
 description: "Priority class for high priority application workloads"
@@ -25,7 +25,7 @@ description: "Priority class for high priority application workloads"
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
-  name: application-normal
+  name: lakeshirts-normal
 value: 0
 globalDefault: true
 description: "Default priority class for normal application workloads"
@@ -33,7 +33,7 @@ description: "Default priority class for normal application workloads"
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
-  name: application-low
+  name: lakeshirts-low
 value: -1000
 globalDefault: false
 description: "Priority class for low priority/batch workloads"

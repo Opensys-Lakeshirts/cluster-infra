@@ -16,7 +16,7 @@ spec:
         app.kubernetes.io/name: node-problem-detector
     spec:
       serviceAccountName: node-problem-detector
-      priorityClassName: system-critical
+      priorityClassName: lakeshirts-critical
       hostNetwork: true
       tolerations:
       - operator: Exists
