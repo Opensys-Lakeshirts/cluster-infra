@@ -13,7 +13,8 @@ spec:
       values: |
         args:
           - --kubelet-insecure-tls
-        hostNetwork: true
+        hostNetwork:
+          enabled: true
         nodeSelector:
           "kubernetes.io/os": linux
   destination:
