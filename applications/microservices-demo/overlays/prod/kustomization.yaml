@@ -3,6 +3,6 @@ kind: Kustomization
 namespace: microservices-demo  # <--- Add this line!
 resources:
   - ../../base
-  - ingress.yaml
   - front-end-hpa.yaml
-  - front-end-nodeport.yaml
+  - simple-nodeport.yaml
+  - working-ingress.yaml
