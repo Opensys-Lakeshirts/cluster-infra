@@ -1,0 +1,39 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: system-critical
+value: 1000000000
+globalDefault: false
+description: "Priority class for system critical workloads (monitoring, logging, etc.)"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: infrastructure-critical
+value: 900000000
+globalDefault: false
+description: "Priority class for critical infrastructure workloads (ingress, cert-manager, etc.)"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: application-high
+value: 800000000
+globalDefault: false
+description: "Priority class for high priority application workloads"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: application-normal
+value: 0
+globalDefault: true
+description: "Default priority class for normal application workloads"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: application-low
+value: -1000
+globalDefault: false
+description: "Priority class for low priority/batch workloads"

@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: node-problem-detector-config
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: node-problem-detector
+    app.kubernetes.io/component: monitoring
+data:
+  kernel-monitor.json: |
+    {
+      "plugin": "journald",
+      "pluginConfig": {
+        "source": "kernel"
+      },
+      "logPath": "/var/log/journal",
+      "lookback": "5m",
+      "bufferSize": 10,
+      "source": "kernel-monitor",
+      "conditions": [],
+      "rules": [
+        {
+          "type": "temporary",
+          "reason": "KernelOops",
+          "pattern": "BUG: unable to handle kernel NULL pointer dereference.*"
+        },
+        {
+          "type": "temporary",
+          "reason": "KernelOops",
+          "pattern": "divide error: 0000.*"
+        }
+      ]
+    }
+  docker-monitor.json: |
+    {
+      "plugin": "journald",
+      "pluginConfig": {
+        "source": "dockerd"
+      },      "logPath": "/var/log/journal",
+      "lookback": "5m", 
+      "bufferSize": 10,
+      "source": "docker-monitor",
+      "conditions": [],
+      "rules": [
+        {
+          "type": "temporary",
+          "reason": "DockerHung", 
+          "pattern": "Task blocked for more than .*"
+        }
+      ]
+    }
+  system-stats-monitor.json: |
+    {
+      "metricsReporting": {
+        "frequency": "60s"
+      },
+      "source": "system-stats-monitor",
+      "conditions": [
+        {
+          "type": "DiskPressure",
+          "reason": "NodeHasDiskPressure",
+          "message": "node has disk pressure"
+        }
+      ],
+      "rules": []
+    }
+  custom-plugin-monitor.json: |
+    {
+      "plugin": "custom",
+      "pluginConfig": {
+        "invoke_interval": "30s",
+        "timeout": "5s",
+        "max_output_length": 80,
+        "concurrency": 3
+      },
+      "source": "custom-plugin-monitor",
+      "conditions": [],
+      "rules": []
+    }

@@ -1,0 +1,83 @@
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: lakeshirts-prod-limits
+  namespace: lakeshirts-prod
+spec:
+  limits:
+  # Default limits for containers
+  - default:
+      cpu: "500m"
+      memory: "1Gi"
+    defaultRequest:
+      cpu: "100m" 
+      memory: "128Mi"
+    type: Container
+  # Limits for pods
+  - max:
+      cpu: "4"
+      memory: "8Gi"
+    min:
+      cpu: "10m"
+      memory: "64Mi"
+    type: Pod
+  # Limits for PVCs
+  - max:
+      storage: "20Gi"
+    min:
+      storage: "1Gi"
+    type: PersistentVolumeClaim
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: lakeshirts-dev-limits
+  namespace: lakeshirts-dev
+spec:
+  limits:
+  - default:
+      cpu: "250m"
+      memory: "512Mi"
+    defaultRequest:
+      cpu: "50m"
+      memory: "64Mi"
+    type: Container
+  - max:
+      cpu: "2"
+      memory: "4Gi"
+    min:
+      cpu: "10m"
+      memory: "32Mi"
+    type: Pod
+  - max:
+      storage: "10Gi"
+    min:
+      storage: "1Gi"
+    type: PersistentVolumeClaim
+---
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: lakeshirts-staging-limits
+  namespace: lakeshirts-staging
+spec:
+  limits:
+  - default:
+      cpu: "400m"
+      memory: "768Mi"
+    defaultRequest:
+      cpu: "75m"
+      memory: "96Mi"
+    type: Container
+  - max:
+      cpu: "3"
+      memory: "6Gi"
+    min:
+      cpu: "10m"
+      memory: "48Mi"
+    type: Pod
+  - max:
+      storage: "15Gi"
+    min:
+      storage: "1Gi"
+    type: PersistentVolumeClaim

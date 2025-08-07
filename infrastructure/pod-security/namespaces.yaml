@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lakeshirts-prod
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    app.kubernetes.io/name: lakeshirts
+    app.kubernetes.io/env: production
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lakeshirts-dev
+  labels:
+    pod-security.kubernetes.io/enforce: baseline
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    app.kubernetes.io/name: lakeshirts
+    app.kubernetes.io/env: development
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: lakeshirts-staging
+  labels:
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+    app.kubernetes.io/name: lakeshirts
+    app.kubernetes.io/env: staging
