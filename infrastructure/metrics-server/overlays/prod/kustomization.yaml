@@ -16,7 +16,8 @@ helmCharts:
         tag: v0.8.0            # Use metrics-server v0.8.0
       args:
         - --kubelet-insecure-tls
-      hostNetwork: true
+      hostNetwork:           
+        enabled: true
       nodeSelector:
         "kubernetes.io/os": linux
 
