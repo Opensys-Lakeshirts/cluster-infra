@@ -9,8 +9,6 @@ spec:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
     targetRevision: HEAD
     path: infrastructure/metrics-server/overlays/prod
-    directory:
-      recurse: true
     kustomize:
       enableHelm: true
   destination:
