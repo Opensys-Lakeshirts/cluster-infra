@@ -9,8 +9,10 @@ spec:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
     targetRevision: HEAD
     path: infrastructure/metrics-server/overlays/prod
+    directory:
+      recurse: true  # ✅ Keep this if you're including subfolders or patch files
     kustomize:
-      enableHelm: true
+      enableHelm: true  # ✅ Required for using HelmChartInflationGenerator
   destination:
     server: https://kubernetes.default.svc
     namespace: metrics-server
