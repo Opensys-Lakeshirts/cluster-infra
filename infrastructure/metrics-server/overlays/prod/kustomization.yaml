@@ -1,0 +1,14 @@
+resources:
+  - ../../base
+
+helmCharts:
+  - name: metrics-server
+    repo: https://kubernetes-sigs.github.io/metrics-server/
+    releaseName: metrics-server
+    namespace: metrics-server
+    version: 3.13.0
+    valuesInline:
+      args:
+        - --kubelet-insecure-tls
+      nodeSelector:
+        kubernetes.io/os: linux

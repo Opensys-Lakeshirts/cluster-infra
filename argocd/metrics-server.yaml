@@ -6,15 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://kubernetes-sigs.github.io/metrics-server/
-    chart: metrics-server
-    targetRevision: 3.13.0
-    helm:
-      values: |
-        args:
-          - --kubelet-insecure-tls
-        nodeSelector:
-          "kubernetes.io/os": linux
+    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
+    targetRevision: HEAD
+    path: infrastructure/metrics-server/overlays/prod
+    directory:
+      recurse: true
+    kustomize:
+      enableHelm: true
   destination:
     server: https://kubernetes.default.svc
     namespace: metrics-server
@@ -24,5 +22,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - Replace=true
-      - ResetValues=true
