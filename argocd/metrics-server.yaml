@@ -11,7 +11,6 @@ spec:
     path: infrastructure/metrics-server/overlays/prod
     kustomize:
       enableHelm: true
-      version: v4.5.7
   destination:
     server: https://kubernetes.default.svc
     namespace: metrics-server
