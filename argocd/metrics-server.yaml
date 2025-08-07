@@ -14,7 +14,7 @@ spec:
         args:
           - --kubelet-insecure-tls
         nodeSelector:
-          kubernetes.io/os: linux
+          "kubernetes.io/os": linux
   destination:
     server: https://kubernetes.default.svc
     namespace: metrics-server
@@ -24,3 +24,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - Replace=true
+      - ResetValues=true
