@@ -16,8 +16,7 @@ helmCharts:
         tag: v0.8.0
       args:
         - --kubelet-insecure-tls
-      hostNetwork:
-        enabled: true         # ✅ This is now correct
+      hostNetwork: true
       nodeSelector:
         "kubernetes.io/os": linux
 
