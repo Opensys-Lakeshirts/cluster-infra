@@ -10,7 +10,7 @@ spec:
     chart: kube-prometheus-stack
     targetRevision: 75.15.1
     helm:
-      skipCrds: true    
+      skipCrds: false    
       values: |
         prometheus:
           prometheusSpec:
@@ -74,3 +74,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
