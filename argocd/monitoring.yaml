@@ -68,12 +68,13 @@ spec:
                   access: proxy
                   url: http://logging-loki.logging.svc.cluster.local:3100
                   isDefault: false
-          initChownData:
-            enabled: false
+          sidecar:
+            initChownData:
+              enabled: false
           podSecurityContext:
             fsGroup: 472
             fsGroupChangePolicy: OnRootMismatch
-          securityContext:
+          containerSecurityContext:
             runAsUser: 472
             runAsGroup: 472
 
