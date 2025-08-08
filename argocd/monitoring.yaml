@@ -1,0 +1,85 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 75.15.1
+    helm:
+      skipCrds: true    
+      values: |
+        prometheus:
+          prometheusSpec:
+            image:
+              registry: quay.io
+              repository: prometheus/prometheus
+              tag: v2.54.1
+              pullPolicy: IfNotPresent
+            retention: 7d
+            serviceMonitorSelectorNilUsesHelmValues: false
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes: [ "ReadWriteOnce" ]
+                  resources:
+                    requests:
+                      storage: 20Gi
+            enableOTLPReceiver: false
+          service:
+            type: NodePort
+            nodePort: 30005
+
+        alertmanager:
+          alertmanagerSpec:
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes: [ "ReadWriteOnce" ]
+                  resources:
+                    requests:
+                      storage: 5Gi
+
+        grafana:
+          adminPassword: "admin"
+          persistence:
+            enabled: true
+            size: 10Gi
+            storageClassName: local-path
+          service:
+            type: NodePort
+            nodePort: 30004
+          ingress:
+            enabled: false
+          plugins:
+            - grafana-piechart-panel
+            - grafana-clock-panel
+          datasources:
+            datasources.yaml:
+              apiVersion: 1
+              datasources:
+                - name: Loki
+                  type: loki
+                  access: proxy
+                  url: http://logging-loki.logging.svc.cluster.local:3100
+                  isDefault: false
+
+        prometheus-node-exporter:
+          extraArgs:
+            - --web.listen-address=:9101
+          hostRootFsMount:
+            enabled: false
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
