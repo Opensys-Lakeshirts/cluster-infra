@@ -68,6 +68,14 @@ spec:
                   access: proxy
                   url: http://logging-loki.logging.svc.cluster.local:3100
                   isDefault: false
+          initChownData:
+            enabled: false
+          podSecurityContext:
+            fsGroup: 472
+            fsGroupChangePolicy: OnRootMismatch
+          securityContext:
+            runAsUser: 472
+            runAsGroup: 472
 
         prometheus-node-exporter:
           extraArgs:
