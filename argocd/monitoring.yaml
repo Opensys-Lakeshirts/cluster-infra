@@ -21,6 +21,13 @@ spec:
               pullPolicy: IfNotPresent
             retention: 7d
             serviceMonitorSelectorNilUsesHelmValues: false
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1000m"
             storageSpec:
               volumeClaimTemplate:
                 spec:
@@ -33,9 +40,15 @@ spec:
           service:
             type: NodePort
             nodePort: 30005
-
         alertmanager:
           alertmanagerSpec:
+            resources:
+              requests:
+                memory: "200Mi"
+                cpu: "100m"
+              limits:
+                memory: "400Mi"
+                cpu: "200m"
             storage:
               volumeClaimTemplate:
                 spec:
@@ -44,9 +57,15 @@ spec:
                   resources:
                     requests:
                       storage: 5Gi
-
         grafana:
           adminPassword: "admin"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
           persistence:
             enabled: true
             size: 10Gi
@@ -59,12 +78,26 @@ spec:
           plugins:
             - grafana-piechart-panel
             - grafana-clock-panel
-
         prometheus-node-exporter:
           extraArgs:
             - --web.listen-address=:9101
           hostRootFsMount:
             enabled: false
+          resources:
+            requests:
+              memory: "50Mi"
+              cpu: "50m"
+            limits:
+              memory: "100Mi"
+              cpu: "100m"
+        prometheusOperator:
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
