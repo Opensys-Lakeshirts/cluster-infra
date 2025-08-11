@@ -23,6 +23,15 @@ spec:
             size: 8Gi
           service:
             type: ClusterIP
+          ingress:
+            enabled: true
+            ingressClassName: haproxy
+            annotations:
+              haproxy-ingress.github.io/rewrite-target: /
+            hosts:
+              - host: 192.168.101.201.nip.io
+                paths:
+                  - /
         ui:
           enabled: true
         injector:
@@ -37,4 +46,3 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ApplyOutOfSyncOnly=true
-
