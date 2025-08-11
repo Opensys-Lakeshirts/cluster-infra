@@ -23,6 +23,9 @@ spec:
             size: 8Gi
           service:
             type: ClusterIP
+        ui:
+          enabled: true
+          serviceType: ClusterIP
           ingress:
             enabled: true
             ingressClassName: haproxy
@@ -32,8 +35,6 @@ spec:
               - host: 192.168.101.201.nip.io
                 paths:
                   - /
-        ui:
-          enabled: true
         injector:
           enabled: false
   destination:
