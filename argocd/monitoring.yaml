@@ -37,6 +37,8 @@ spec:
                     requests:
                       storage: 20Gi
             enableOTLPReceiver: false
+            replicas: 1
+            shards: 1
           service:
             type: NodePort
             nodePort: 30005
@@ -57,15 +59,16 @@ spec:
                   resources:
                     requests:
                       storage: 5Gi
+            replicas: 1
         grafana:
           adminPassword: "admin"
           resources:
             requests:
-              memory: "128Mi"
+              memory: "256Mi"  
               cpu: "100m"
             limits:
-              memory: "256Mi"
-              cpu: "200m"
+              memory: "512Mi"  
+              cpu: "300m"      
           persistence:
             enabled: true
             size: 10Gi
@@ -93,11 +96,27 @@ spec:
         prometheusOperator:
           resources:
             requests:
-              memory: "100Mi"
+              memory: "150Mi"  
               cpu: "100m"
             limits:
-              memory: "200Mi"
+              memory: "300Mi"  
               cpu: "200m"
+          logLevel: info
+          configReloaderResources:
+            requests:
+              memory: "25Mi"
+              cpu: "10m"
+            limits:
+              memory: "50Mi"
+              cpu: "50m"
+        kube-state-metrics:
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "10m"
+            limits:
+              memory: "128Mi"
+              cpu: "100m"
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -107,4 +126,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
+      - SkipDryRunOnMissingResource=true
