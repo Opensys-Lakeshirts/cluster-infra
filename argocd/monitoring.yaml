@@ -64,7 +64,7 @@ spec:
           adminPassword: "admin"
           resources:
             requests:
-              memory: "256Mi"  
+              memory: "350Mi"  
               cpu: "100m"
             limits:
               memory: "512Mi"  
@@ -97,10 +97,10 @@ spec:
           resources:
             requests:
               memory: "150Mi"  
-              cpu: "100m"
+              cpu: "250m"
             limits:
               memory: "300Mi"  
-              cpu: "200m"
+              cpu: "500m"
           logLevel: info
           configReloaderResources:
             requests:
