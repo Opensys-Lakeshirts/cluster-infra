@@ -1,0 +1,97 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://prometheus-community.github.io/helm-charts
+    chart: kube-prometheus-stack
+    targetRevision: 75.15.1
+    helm:
+      skipCrds: true    
+      values: |
+        prometheus:
+          prometheusSpec:
+            image:
+              registry: quay.io
+              repository: prometheus/prometheus
+              tag: v2.54.1
+              pullPolicy: IfNotPresent
+            retention: 7d
+            serviceMonitorSelectorNilUsesHelmValues: false
+            resources:
+              requests:
+                memory: "1Gi"
+                cpu: "500m"
+              limits:
+                memory: "2Gi"
+                cpu: "1000m"
+            storageSpec:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes: [ "ReadWriteOnce" ]
+                  resources:
+                    requests:
+                      storage: 20Gi
+            enableOTLPReceiver: false
+          service:
+            type: NodePort
+            nodePort: 30005
+        alertmanager:
+          alertmanagerSpec:
+            resources:
+              requests:
+                memory: "200Mi"
+                cpu: "100m"
+              limits:
+                memory: "400Mi"
+                cpu: "200m"
+            storage:
+              volumeClaimTemplate:
+                spec:
+                  storageClassName: local-path
+                  accessModes: [ "ReadWriteOnce" ]
+                  resources:
+                    requests:
+                      storage: 5Gi
+        grafana:
+          adminPassword: "admin"
+          persistence:
+            enabled: true
+            size: 10Gi
+            storageClassName: local-path
+          service:
+            type: NodePort
+            nodePort: 30004
+          ingress:
+            enabled: false
+          plugins:
+            - grafana-piechart-panel
+            - grafana-clock-panel
+        prometheus-node-exporter:
+          extraArgs:
+            - --web.listen-address=:9101
+          hostRootFsMount:
+            enabled: false
+        # CRITICAL: Fix the root cause - Operator resource limits
+        prometheusOperator:
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
