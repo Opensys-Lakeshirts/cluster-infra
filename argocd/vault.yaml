@@ -32,7 +32,7 @@ spec:
             annotations:
               haproxy-ingress.github.io/rewrite-target: /
             hosts:
-              - host: 192.168.101.201.nip.io
+              - host: vault.192.168.101.191.nip.io
                 paths:
                   - /
         injector:
