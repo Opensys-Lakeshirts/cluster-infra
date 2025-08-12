@@ -31,20 +31,6 @@ spec:
               http: 80
               https: 443
 
-        extraServices:
-          - name: ingress-controller-lb
-            type: LoadBalancer
-            ports:
-              - name: http
-                port: 80
-                targetPort: 80
-              - name: https
-                port: 443
-                targetPort: 443
-            selector:
-              app.kubernetes.io/name: kubernetes-ingress
-              app.kubernetes.io/instance: ingress-controller
-
   destination:
     server: https://kubernetes.default.svc
     namespace: ingress-controller
