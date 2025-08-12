@@ -21,6 +21,9 @@ spec:
             nodePorts:
               http: 30080
               https: 30443
+            labels:
+              app.kubernetes.io/name: kubernetes-ingress
+              app.kubernetes.io/instance: ingress-controller
           hostNetwork: true
           hostPort:
             enabled: true
