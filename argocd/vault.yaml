@@ -34,7 +34,13 @@ spec:
             hosts:
               - host: vault.192.168.101.191.nip.io
                 paths:
-                  - /
+                  - path: /
+                    pathType: Prefix
+                    backend:
+                      service:
+                        name: vault-ui
+                        port:
+                          number: 8200
         injector:
           enabled: false
   destination:
