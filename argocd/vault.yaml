@@ -24,24 +24,19 @@ spec:
           service:
             type: ClusterIP
             port: 8200
-          # Add readiness and liveness probes
-          readinessProbe:
-            enabled: true
-            path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
-          livenessProbe:
-            enabled: true
-            path: "/v1/sys/health?standbyok=true"
-            initialDelaySeconds: 60
           # Ingress configuration at server level
           ingress:
             enabled: true
             ingressClassName: haproxy
             annotations:
               haproxy-ingress.github.io/rewrite-target: /
+              haproxy-ingress.github.io/backend-protocol: "http"              
             hosts:
               - host: vault.192.168.101.191.nip.io
                 paths:
                   - /
+            pathType: Prefix
+
         ui:
           enabled: true
           serviceType: ClusterIP
