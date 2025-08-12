@@ -23,9 +23,16 @@ spec:
             size: 8Gi
           service:
             type: ClusterIP
-        ui:
-          enabled: true
-          serviceType: ClusterIP
+            port: 8200
+          # Add readiness and liveness probes
+          readinessProbe:
+            enabled: true
+            path: "/v1/sys/health?standbyok=true&sealedcode=204&uninitcode=204"
+          livenessProbe:
+            enabled: true
+            path: "/v1/sys/health?standbyok=true"
+            initialDelaySeconds: 60
+          # Ingress configuration at server level
           ingress:
             enabled: true
             ingressClassName: haproxy
@@ -35,6 +42,9 @@ spec:
               - host: vault.192.168.101.191.nip.io
                 paths:
                   - /
+        ui:
+          enabled: true
+          serviceType: ClusterIP
         injector:
           enabled: false
   destination:
