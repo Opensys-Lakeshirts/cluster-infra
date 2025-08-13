@@ -29,14 +29,14 @@ spec:
             enabled: true
             ingressClassName: haproxy
             annotations:
-              haproxy-ingress.github.io/rewrite-target: /
-              haproxy-ingress.github.io/backend-protocol: "http"              
+              haproxy-ingress.github.io/backend-protocol: "http"
+              haproxy-ingress.github.io/server-alias: "vault.192.168.101.191.nip.io"
             hosts:
               - host: vault.192.168.101.191.nip.io
                 paths:
                   - /
+                  - /ui
             pathType: Prefix
-
         ui:
           enabled: true
           serviceType: ClusterIP
