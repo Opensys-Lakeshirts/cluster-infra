@@ -27,19 +27,7 @@ spec:
             nodePort: 30820
           ingress:
             enabled: false
-          postStart:
-            - /bin/sh
-            - -c
-            - |
-              sleep 30
-              export VAULT_ADDR=http://localhost:8200
-              vault policy write admin - <<EOF
-              path "*" {
-                capabilities = ["create", "read", "update", "delete", "list", "sudo"]
-              }
-              EOF
-              vault auth enable userpass 2>/dev/null || true
-              vault write auth/userpass/users/admin password=admin123 policies=admin
+
         ui:
           enabled: true
           serviceType: NodePort
