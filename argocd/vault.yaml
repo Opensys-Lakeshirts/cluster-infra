@@ -22,24 +22,28 @@ spec:
             storageClass: local-path
             size: 8Gi
           service:
-            type: ClusterIP
+            type: NodePort
             port: 8200
-          # Ingress configuration at server level
+            nodePort: 30820
           ingress:
-            enabled: true
-            ingressClassName: haproxy
-            annotations:
-              haproxy-ingress.github.io/backend-protocol: "http"
-              haproxy-ingress.github.io/server-alias: "vault.192.168.101.191.nip.io"
-            hosts:
-              - host: vault.192.168.101.191.nip.io
-                paths:
-                  - /
-                  - /ui
-            pathType: Prefix
+            enabled: false
+          postStart:
+            - /bin/sh
+            - -c
+            - |
+              sleep 30
+              export VAULT_ADDR=http://localhost:8200
+              vault policy write admin - <<EOF
+              path "*" {
+                capabilities = ["create", "read", "update", "delete", "list", "sudo"]
+              }
+              EOF
+              vault auth enable userpass 2>/dev/null || true
+              vault write auth/userpass/users/admin password=admin123 policies=admin
         ui:
           enabled: true
-          serviceType: ClusterIP
+          serviceType: NodePort
+          serviceNodePort: 30821
         injector:
           enabled: false
   destination:
