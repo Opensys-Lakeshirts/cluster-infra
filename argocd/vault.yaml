@@ -15,23 +15,29 @@ spec:
           ha:
             enabled: true
             replicas: 3
-            raft:
-              enabled: true
+          raft:
+            enabled: true
           dataStorage:
             enabled: true
             storageClass: local-path
             size: 8Gi
           service:
-            type: NodePort
+            type: ClusterIP
             port: 8200
-            nodePort: 30820
+
           ingress:
-            enabled: false
+            enabled: true
+            annotations:
+              kubernetes.io/ingress.class: haproxy
+              haproxy.org/backend-protocol: "http"
+            hosts:
+              - host: vault.local
+                paths: 
+                  - /
 
         ui:
           enabled: true
-          serviceType: NodePort
-          serviceNodePort: 30821
+
         injector:
           enabled: false
   destination:
