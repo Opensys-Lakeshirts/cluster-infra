@@ -22,6 +22,9 @@ spec:
             storageClass: local-path
             size: 8Gi
 
+          volumePermissions:
+            enabled: true
+
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
