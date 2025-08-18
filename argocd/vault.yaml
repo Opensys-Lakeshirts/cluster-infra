@@ -21,6 +21,12 @@ spec:
             enabled: true
             storageClass: local-path
             size: 8Gi
+
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+
           service:
             type: ClusterIP
             port: 8200
