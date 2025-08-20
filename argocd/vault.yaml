@@ -65,14 +65,19 @@ spec:
             fsGroup: 1000
 
           service:
-            type: ClusterIP
+            type: LoadBalancer 
             port: 8200
+            annotations:
+              metallb.universe.tf/loadBalancerIPs: "192.168.101.232"
 
           ingress:
             enabled: true
             annotations:
               kubernetes.io/ingress.class: haproxy
               haproxy.org/backend-protocol: "http"
+              haproxy.org/check: "true"
+              haproxy.org/check-http: "/v1/sys/health"
+
             hosts:
               - host: vault.local
                 paths: 
