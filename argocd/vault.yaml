@@ -69,6 +69,11 @@ spec:
             port: 8200
             annotations:
               metallb.universe.tf/loadBalancerIPs: "192.168.101.232"
+          # Disable active/standby services to avoid IP conflicts
+          activeService:
+            enabled: false
+          standbyService:
+            enabled: false
 
           ingress:
             enabled: true
