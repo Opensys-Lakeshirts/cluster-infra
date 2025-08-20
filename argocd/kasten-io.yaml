@@ -14,6 +14,7 @@ spec:
         eula:
           accept: true
           company: "Lakeshirts"
+          email: "suyash@4gd.ai"
         auth:
           tokenAuth:
             enabled: true
