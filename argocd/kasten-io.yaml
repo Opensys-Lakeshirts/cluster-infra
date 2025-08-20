@@ -11,6 +11,8 @@ spec:
     targetRevision: 7.0.2   # Latest stable for Kubernetes 1.33
     helm:
       values: |
+        eula:
+          accept: true
         auth:
           tokenAuth:
             enabled: true
