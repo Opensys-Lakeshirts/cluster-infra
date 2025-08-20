@@ -24,6 +24,10 @@ spec:
         global:
           persistence:
             storageClass: local-path
+        prometheus:
+          enabled: false
+        grafana:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: kasten-io
