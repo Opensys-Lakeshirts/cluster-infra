@@ -24,6 +24,12 @@ spec:
         global:
           persistence:
             storageClass: local-path
+          logging:
+            fluentbit:
+              enabled: false
+          metering:
+            enabled: false
+
         prometheus:
           server:
             enabled: false
@@ -33,11 +39,8 @@ spec:
             enabled: false
           pushgateway:
             enabled: false
+
         grafana:
-          enabled: false
-        logging:
-          enabled: false
-        metering:
           enabled: false
   destination:
     server: https://kubernetes.default.svc
