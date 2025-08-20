@@ -11,12 +11,47 @@ spec:
     targetRevision: 0.30.1
     helm:
       values: |
+        global:
+          enabled: true
+          tlsDisable: true
+
         server:
           ha:
             enabled: true
             replicas: 3
-          raft:
-            enabled: true
+            raft:
+              enabled: true
+              setNodeId: true
+              # THIS IS THE CRITICAL PART - Actual Raft storage configuration
+              config: |
+                ui = true
+                
+                listener "tcp" {
+                  tls_disable = 1
+                  address = "[::]:8200"
+                  cluster_address = "[::]:8201"
+                }
+                
+                storage "raft" {
+                  path = "/vault/data"
+                  
+                  retry_join {
+                    leader_api_addr = "http://vault-0.vault-internal:8200"
+                  }
+                  
+                  retry_join {
+                    leader_api_addr = "http://vault-1.vault-internal:8200"
+                  }
+                  
+                  retry_join {
+                    leader_api_addr = "http://vault-2.vault-internal:8200"
+                  }
+                }
+                
+                service_registration "kubernetes" {}
+                
+                disable_mlock = true
+
           dataStorage:
             enabled: true
             storageClass: local-path
@@ -24,7 +59,6 @@ spec:
 
           volumePermissions:
             enabled: true
-
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -44,11 +78,22 @@ spec:
                 paths: 
                   - /
 
+          # Pod anti-affinity to spread across healthy nodes
+          affinity: |
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: vault
+                      app.kubernetes.io/instance: "vault"
+                      component: server
+                  topologyKey: kubernetes.io/hostname
+
         ui:
           enabled: true
-
         injector:
           enabled: false
+
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
