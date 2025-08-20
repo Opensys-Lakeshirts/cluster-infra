@@ -25,7 +25,14 @@ spec:
           persistence:
             storageClass: local-path
         prometheus:
-          enabled: false
+          server:
+            enabled: false
+          alertmanager:
+            enabled: false
+          nodeExporter:
+            enabled: false
+          pushgateway:
+            enabled: false
         grafana:
           enabled: false
         logging:
