@@ -28,6 +28,10 @@ spec:
           enabled: false
         grafana:
           enabled: false
+        logging:
+          enabled: false
+        metering:
+          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: kasten-io
