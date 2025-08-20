@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://charts.kasten.io/
     chart: k10
-    targetRevision: 7.0.2   # Latest stable for Kubernetes 1.33
+    targetRevision: 7.0.2
     helm:
       values: |
         eula:
