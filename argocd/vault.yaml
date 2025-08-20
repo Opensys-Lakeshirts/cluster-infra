@@ -82,11 +82,14 @@ spec:
               haproxy.org/backend-protocol: "http"
               haproxy.org/check: "true"
               haproxy.org/check-http: "/v1/sys/health"
+            ingressClassName: haproxy
 
             hosts:
               - host: vault.local
                 paths: 
                   - /
+
+            pathType: Prefix
 
           # Pod anti-affinity to spread across healthy nodes
           affinity: |
