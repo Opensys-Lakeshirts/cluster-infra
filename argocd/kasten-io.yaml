@@ -13,6 +13,7 @@ spec:
       values: |
         eula:
           accept: true
+          company: "Lakeshirts"
         auth:
           tokenAuth:
             enabled: true
