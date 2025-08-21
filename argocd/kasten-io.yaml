@@ -21,6 +21,14 @@ spec:
         externalGateway:
           create: true
           serviceType: LoadBalancer
+          ports:
+            http:
+              port: 80
+              targetPort: 8000
+          ingress:
+            enabled: true
+            paths:
+              - /k10/
         global:
           persistence:
             storageClass: local-path
