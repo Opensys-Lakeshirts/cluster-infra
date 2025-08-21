@@ -20,10 +20,7 @@ spec:
             enabled: true
         externalGateway:
           create: true
-          serviceType: NodePort
-          ports:
-            http:
-              nodePort: 32000
+          serviceType: LoadBalancer
         global:
           persistence:
             storageClass: local-path
