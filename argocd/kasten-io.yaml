@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: https://charts.kasten.io/
     chart: k10
-    targetRevision: 7.0.2
+    targetRevision: 7.5.1
     helm:
       values: |
         eula:
@@ -24,24 +24,6 @@ spec:
         global:
           persistence:
             storageClass: local-path
-          logging:
-            fluentbit:
-              enabled: false
-          metering:
-            enabled: false
-
-        prometheus:
-          server:
-            enabled: false
-          alertmanager:
-            enabled: false
-          nodeExporter:
-            enabled: false
-          pushgateway:
-            enabled: false
-
-        grafana:
-          enabled: false
   destination:
     server: https://kubernetes.default.svc
     namespace: kasten-io
