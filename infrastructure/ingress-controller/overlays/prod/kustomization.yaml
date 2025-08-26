@@ -1,4 +1,4 @@
 resources:
   - ../../base
-  - argocd-ingress.yaml
+  - argocd-ingress-nip-fixed.yaml
 

@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress-secure
+  namespace: argocd
+  annotations:
+    # Use the existing cert-manager ClusterIssuer
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # Don't redirect to HTTPS during certificate provisioning
+    haproxy.org/ssl-redirect: "false"
+spec:
+  ingressClassName: haproxy
+  tls:
+  - hosts:
+    - argocd.51.8.236.167.nip.io
+    secretName: argocd-tls-secret
+  rules:
+  - host: argocd.51.8.236.167.nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
