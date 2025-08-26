@@ -1,0 +1,32 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress-secure
+  namespace: argocd
+  annotations:
+    # HAProxy specific annotations for ArgoCD
+    haproxy.org/ssl-redirect: "true"
+    haproxy.org/backend-config-snippet: |
+      option httpchk GET /healthz
+    # Use the existing cert-manager ClusterIssuer
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    # ArgoCD specific configuration
+    haproxy.org/server-ssl: "true"
+    haproxy.org/check-ssl: "true"
+spec:
+  ingressClassName: haproxy
+  tls:
+  - hosts:
+    - argocd.yourdomain.com  # Replace with your actual domain
+    secretName: argocd-tls-secret
+  rules:
+  - host: argocd.yourdomain.com  # Replace with your actual domain
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 443  # Use HTTPS port
