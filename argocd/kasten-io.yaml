@@ -28,7 +28,7 @@ spec:
           ingress:
             enabled: true
             paths:
-              - /k10/
+              - /
         global:
           persistence:
             storageClass: local-path
