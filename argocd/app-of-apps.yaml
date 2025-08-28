@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    targetRevision: HEAD
+    targetRevision: dev
     path: argocd
   destination:
     server: https://kubernetes.default.svc
