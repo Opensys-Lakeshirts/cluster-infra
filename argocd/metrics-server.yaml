@@ -15,9 +15,11 @@ spec:
           - --kubelet-insecure-tls
         nodeSelector:
           "kubernetes.io/os": linux
+        podDisruptionBudget:
+          enabled: true
   destination:
     server: https://kubernetes.default.svc
-    namespace: metrics-server
+    namespace: kube-system
   syncPolicy:
     automated:
       prune: true
@@ -26,3 +28,14 @@ spec:
       - CreateNamespace=true
       - Replace=true
       - ResetValues=true
+  ignoreDifferences:
+    - group: apiregistration.k8s.io
+      kind: APIService
+      name: v1beta1.metrics.k8s.io
+      jsonPointers:
+        - /spec/insecureSkipTLSVerify
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: system:metrics-server
+      jsonPointers:
+        - /rules
