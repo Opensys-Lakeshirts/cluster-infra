@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    targetRevision: HEAD
+    targetRevision: dev
     path: infrastructure/priority-classes
   destination:
     server: https://kubernetes.default.svc
@@ -27,7 +27,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    targetRevision: HEAD
+    targetRevision: dev
     path: infrastructure/pod-security
   destination:
     server: https://kubernetes.default.svc
@@ -47,7 +47,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    targetRevision: HEAD
+    targetRevision: dev
     path: infrastructure/resource-quotas
   destination:
     server: https://kubernetes.default.svc
@@ -67,7 +67,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    targetRevision: HEAD
+    targetRevision: dev
     path: infrastructure/node-problem-detector
   destination:
     server: https://kubernetes.default.svc
