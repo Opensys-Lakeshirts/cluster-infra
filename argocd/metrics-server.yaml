@@ -29,13 +29,28 @@ spec:
       - ResetValues=true
       - PruneLast=true
   ignoreDifferences:
-    - group: apiregistration.k8s.io
-      kind: APIService
-      name: v1beta1.metrics.k8s.io
-      jqPathExpressions:
-        - .
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: system:metrics-server
-      jsonPointers:
-        - /rules
+      - group: ""
+        kind: ServiceAccount
+        name: metrics-server
+        namespace: kube-system
+        jsonPointers:
+          - /metadata/annotations
+          - /metadata/labels
+      - group: rbac.authorization.k8s.io
+        kind: ClusterRole
+        name: system:metrics-server
+        jsonPointers:
+          - /metadata/annotations
+          - /metadata/labels
+      - group: rbac.authorization.k8s.io
+        kind: ClusterRoleBinding
+        name: system:metrics-server
+        jsonPointers:
+          - /metadata/annotations
+          - /metadata/labels
+      - group: apiregistration.k8s.io
+        kind: APIService
+        name: v1beta1.metrics.k8s.io
+        jsonPointers:
+          - /metadata/annotations
+          - /metadata/labels
