@@ -68,7 +68,7 @@ spec:
             type: LoadBalancer 
             port: 8200
             annotations:
-              metallb.universe.tf/loadBalancerIPs: "192.168.101.232"
+
           # Disable active/standby services to avoid IP conflicts
           activeService:
             enabled: false
@@ -76,7 +76,7 @@ spec:
             enabled: false
 
           ingress:
-            enabled: true
+            enabled: false
             annotations:
               kubernetes.io/ingress.class: haproxy
               haproxy.org/backend-protocol: "http"
