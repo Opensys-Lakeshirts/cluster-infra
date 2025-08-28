@@ -11,10 +11,10 @@ spec:
     targetRevision: 3.13.0
     helm:
       values: |
-        args:
+        containerArgs:
           - --kubelet-insecure-tls
         nodeSelector:
-          "kubernetes.io/os": linux
+          kubernetes.io/os: linux
         podDisruptionBudget:
           enabled: true
   destination:
@@ -26,7 +26,6 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - Replace=true
       - ResetValues=true
       - PruneLast=true
   ignoreDifferences:
