@@ -28,6 +28,7 @@ spec:
       - CreateNamespace=true
       - Replace=true
       - ResetValues=true
+      - PruneLast=true
   ignoreDifferences:
     - group: apiregistration.k8s.io
       kind: APIService
