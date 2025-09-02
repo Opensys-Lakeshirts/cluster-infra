@@ -3,7 +3,7 @@ kind: Kustomization
 
 resources:
   - ../../infrastructure/cert-manager/overlays/dr
-  - ../../infrastructure/kyverno/overlays/dr
+  # - ../../infrastructure/kyverno/overlays/dr
   - ../../infrastructure/logging/overlays/dr
   - ../../infrastructure/monitoring/overlays/dr
   - ../../infrastructure/vault/overlays/dr
