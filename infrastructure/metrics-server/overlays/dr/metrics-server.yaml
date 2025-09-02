@@ -10,11 +10,8 @@ spec:
     chart: metrics-server
     targetRevision: 3.13.0
     helm:
-      values: |
-        args:
-          - --kubelet-insecure-tls
-        nodeSelector:
-          kubernetes.io/os: linux
+      valueFiles:
+        - values-dr.yaml   
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
