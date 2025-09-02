@@ -6,7 +6,7 @@ metadata:
   namespace: argocd
 spec:
   source:
-    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
+    repoURL: https://github.com/Opensys-Lakeshirts/cluster-infra
     targetRevision: dev
     path: clusters/dev
   destination:
