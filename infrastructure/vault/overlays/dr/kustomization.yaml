@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: vault
 
 resources:
-  - ../../base
+  - vault-app.yaml
