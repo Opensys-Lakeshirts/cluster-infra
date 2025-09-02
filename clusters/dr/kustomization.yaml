@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Infrastructure components for AKS DR
+  - ../../infrastructure/cert-manager/overlays/dr
+  - ../../infrastructure/ingress-controller/overlays/dr
+  - ../../infrastructure/kyverno/overlays/dr
+  - ../../infrastructure/logging/overlays/dr
+  - ../../infrastructure/metallb/overlays/dr
+  - ../../infrastructure/monitoring/overlays/dr
+  - ../../infrastructure/vault/overlays/dr
+  - ../../infrastructure/kasten-io/overlays/dr
+  # ❌ Do NOT include node-problem-detector

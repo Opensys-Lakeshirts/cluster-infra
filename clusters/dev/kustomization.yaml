@@ -1,1 +1,13 @@
-resources: []
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  # Infrastructure components for on-prem (dev)
+  - ../../infrastructure/cert-manager/overlays/dev
+  - ../../infrastructure/ingress-controller/overlays/dev
+  - ../../infrastructure/kyverno/overlays/dev
+  - ../../infrastructure/logging/overlays/dev
+  - ../../infrastructure/metallb/overlays/dev
+  - ../../infrastructure/monitoring/overlays/dev
+  - ../../infrastructure/vault/overlays/dev
+  - ../../infrastructure/kasten-io/overlays/dev
+  - ../../infrastructure/node-problem-detector/overlays/dev   # ✅ only here

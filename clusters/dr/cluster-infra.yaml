@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-infra-dr
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
+    targetRevision: dev
+    path: clusters/dr
+  destination:
+    server: https://lakeshirts-prod-dns-ufhejyh2.be8b7423-6625-439a-bdd4-db8f3635ee7b.privatelink.eastus.azmk8s.io
+    namespace: argocd
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

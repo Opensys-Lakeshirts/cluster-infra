@@ -1,0 +1,87 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: node-problem-detector
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: node-problem-detector
+    app.kubernetes.io/component: monitoring
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: node-problem-detector
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: node-problem-detector
+    spec:
+      serviceAccountName: node-problem-detector
+      priorityClassName: lakeshirts-critical
+      hostNetwork: true
+      tolerations:
+        - operator: Exists
+          effect: NoSchedule
+        - key: CriticalAddonsOnly
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
+      containers:
+        - name: node-problem-detector
+          image: registry.k8s.io/node-problem-detector/node-problem-detector:v0.8.15
+          command:
+            - /node-problem-detector
+            - --logtostderr
+            # Use journald on Alpine (since /var/log/messages may not exist)
+            - --config.system-log-monitor=/config/kernel-monitor.json,/config/docker-monitor.json
+            - --config.system-stats-monitor=/config/system-stats-monitor.json
+            - --config.custom-plugin-monitor=/config/custom-plugin-monitor.json
+            # Change ports to avoid conflicts with any existing process
+            - --port=20256
+            - --prometheus-port=20256
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+          securityContext:
+            privileged: true
+          resources:
+            limits:
+              cpu: 80m
+              memory: 80Mi
+            requests:
+              cpu: 20m
+              memory: 20Mi
+          ports:
+            - containerPort: 20256
+              hostPort: 20256
+              name: exporter
+              protocol: TCP
+          volumeMounts:
+            - name: log
+              mountPath: /var/log
+              readOnly: true
+            - name: kmsg
+              mountPath: /dev/kmsg
+              readOnly: true
+            - name: localtime
+              mountPath: /etc/localtime
+              readOnly: true
+            - name: config
+              mountPath: /config
+              readOnly: true
+      volumes:
+        - name: log
+          hostPath:
+            path: /var/log/
+        - name: kmsg
+          hostPath:
+            path: /dev/kmsg
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+            type: File
+        - name: config
+          configMap:
+            name: node-problem-detector-config
+            defaultMode: 0644

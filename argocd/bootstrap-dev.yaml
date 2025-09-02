@@ -1,0 +1,14 @@
+# argocd/bootstrap-dev.yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cluster-infra
+  namespace: argocd
+spec:
+  source:
+    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
+    targetRevision: dev
+    path: clusters/dev
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: argocd
