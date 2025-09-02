@@ -11,12 +11,22 @@ spec:
     targetRevision: 3.12.2
     helm:
       values: |
-        containerArgs:
+        # Production-safe defaults
+        args:
           - --kubelet-insecure-tls
+          - --kubelet-preferred-address-types=InternalIP,Hostname,ExternalIP
+          - --metric-resolution=30s
         nodeSelector:
           kubernetes.io/os: linux
         podDisruptionBudget:
           enabled: true
+        resources:
+          requests:
+            cpu: 50m
+            memory: 64Mi
+          limits:
+            cpu: 250m
+            memory: 256Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
@@ -28,29 +38,52 @@ spec:
       - CreateNamespace=true
       - ResetValues=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true
+      - ServerSideApply=true
   ignoreDifferences:
-      - group: ""
-        kind: ServiceAccount
-        name: metrics-server
-        namespace: kube-system
-        jsonPointers:
-          - /metadata/annotations
-          - /metadata/labels
-      - group: rbac.authorization.k8s.io
-        kind: ClusterRole
-        name: system:metrics-server
-        jsonPointers:
-          - /metadata/annotations
-          - /metadata/labels
-      - group: rbac.authorization.k8s.io
-        kind: ClusterRoleBinding
-        name: system:metrics-server
-        jsonPointers:
-          - /metadata/annotations
-          - /metadata/labels
-      - group: apiregistration.k8s.io
-        kind: APIService
-        name: v1beta1.metrics.k8s.io
-        jsonPointers:
-          - /metadata/annotations
-          - /metadata/labels
+    # Service often drifts due to cluster defaults (IPs, families, appProtocol, nodePort, etc.)
+    - group: ""
+      kind: Service
+      namespace: kube-system
+      name: metrics-server
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+        - .spec.clusterIP
+        - .spec.clusterIPs
+        - .spec.ipFamilies
+        - .spec.ipFamilyPolicy
+        - .spec.internalTrafficPolicy
+        - .spec.sessionAffinity
+        - .spec.ports[]?.appProtocol
+        - .spec.ports[]?.nodePort
+        - .spec.ports[]?.targetPort
+    # Aggregated/auto-managed RBAC may add rules/subjects or labels
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: system:metrics-server
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+        - .rules
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+      name: metrics-server:system:auth-delegator
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+        - .subjects
+    - group: rbac.authorization.k8s.io
+      kind: RoleBinding
+      namespace: kube-system
+      name: metrics-server-auth-reader
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+    # APIService often gets managed annotations/labels
+    - group: apiregistration.k8s.io
+      kind: APIService
+      name: v1beta1.metrics.k8s.io
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
