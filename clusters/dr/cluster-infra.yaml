@@ -7,10 +7,9 @@ spec:
   project: default
   source:
     repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
-    targetRevision: dev   # or main once merged
-    path: clusters/dr     # <-- IMPORTANT: folder, not file
-    directory:
-      recurse: true       # <-- tells ArgoCD to render kustomize, not apply as CRD
+    targetRevision: dev   # switch to main once merged
+    path: clusters/dr
+    kustomize: {}         # <-- tells ArgoCD this is a kustomize root
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
