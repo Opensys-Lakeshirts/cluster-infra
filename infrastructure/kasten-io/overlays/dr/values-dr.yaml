@@ -7,6 +7,11 @@ auth:
   tokenAuth:
     enabled: true
 
+global:
+  persistence:
+    storageClass: managed-premium
+    size: 50Gi
+
 externalGateway:
   create: true
   serviceType: LoadBalancer
@@ -15,10 +20,4 @@ externalGateway:
       port: 80
       targetPort: 8000
   ingress:
-    enabled: true
-    paths:
-      - /k10/
-
-global:
-  persistence:
-    storageClass: local-path
+    enabled: false
