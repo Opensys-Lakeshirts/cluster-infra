@@ -5,4 +5,3 @@ namespace: vault
 
 resources:
   - vault-app.yaml
-  - values-dr.yaml
