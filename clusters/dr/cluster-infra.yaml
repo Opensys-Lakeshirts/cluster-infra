@@ -1,21 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: kasten-io-app
+  name: cluster-infra-dr
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://charts.kasten.io/
-    chart: k10
-    targetRevision: 7.5.1
-    helm:
-      releaseName: kasten-io
-      valueFiles:
-        - values-dr.yaml
+    repoURL: https://github.com/Opensys-Lakeshirts/cluster-infra
+    targetRevision: dev
+    path: clusters/dr
   destination:
     server: https://kubernetes.default.svc
-    namespace: kasten-io
+    namespace: argocd
   syncPolicy:
     automated:
       prune: true
