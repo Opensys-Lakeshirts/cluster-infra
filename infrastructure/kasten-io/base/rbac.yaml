@@ -13,15 +13,6 @@ roleRef:
   kind: ClusterRole
   name: cluster-admin
 subjects:
-  - kind: ServiceAccount
-    name: k10-admin
-    namespace: kasten-io
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: k10-admin-token
+- kind: ServiceAccount
+  name: k10-admin
   namespace: kasten-io
-  annotations:
-    kubernetes.io/service-account.name: k10-admin
-type: kubernetes.io/service-account-token
