@@ -10,7 +10,7 @@ spec:
     targetRevision: dev
     path: clusters/dr
   destination:
-    server: https://lakeshirts-prod-dns-ufhejyh2.be8b7423-6625-439a-bdd4-db8f3635ee7b.privatelink.eastus.azmk8s.io
+    server: https://kubernetes.default.svc
     namespace: argocd
   syncPolicy:
     automated:
