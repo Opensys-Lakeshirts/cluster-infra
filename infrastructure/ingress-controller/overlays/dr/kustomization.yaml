@@ -5,5 +5,6 @@ namespace: ingress-controller
 
 resources:
   - ../../base
-  - argocd-ingress.yaml
+  - service-lb.yaml 
+  # - argocd-ingress.yaml
 

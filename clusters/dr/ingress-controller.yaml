@@ -1,0 +1,28 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-controller
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://haproxytech.github.io/helm-charts
+    chart: kubernetes-ingress
+    targetRevision: 1.44.0
+    helm:
+      releaseName: haproxy-ingress
+      values: |
+        # DR-specific overrides
+        controller:
+          kind: DaemonSet
+        service:
+          type: LoadBalancer   # ✅ Azure AKS will provision LB
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-controller
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

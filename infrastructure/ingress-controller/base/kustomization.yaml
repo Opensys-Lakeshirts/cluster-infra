@@ -1,12 +1,10 @@
-resources:
-  - namespace.yaml
-  - ingressclass.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 
 helmCharts:
   - name: kubernetes-ingress
-    repo: https://haproxytech.github.io/helm-charts
-    releaseName: haproxy-ingress
     namespace: ingress-controller
+    releaseName: haproxy-ingress
+    repo: https://haproxytech.github.io/helm-charts
     version: 1.44.0
     valuesFile: values.yaml
-
