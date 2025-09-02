@@ -2,10 +2,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
-  - ../../infrastructure/cert-manager/overlays/dr
-  - ../../infrastructure/kyverno/overlays/dr
-  - ../../infrastructure/logging/overlays/dr
-  - ../../infrastructure/monitoring/overlays/dr
-  - ../../infrastructure/vault/overlays/dr
-  - ../../infrastructure/kasten-io/overlays/dr
-  - metrics-server.yaml
+  - ../../infrastructure/cert-manager/overlays/dr/cert-manager.yaml
+  - ../../infrastructure/kyverno/overlays/dr/kyverno.yaml
+  - ../../infrastructure/logging/overlays/dr/logging.yaml
+  - ../../infrastructure/monitoring/overlays/dr/monitoring.yaml
+  - ../../infrastructure/vault/overlays/dr/vault.yaml
+  - ../../infrastructure/kasten-io/overlays/dr/kasten-io.yaml
+  - ../../infrastructure/metrics-server/overlays/dr/metrics-server.yaml

@@ -1,9 +1,6 @@
-resources:
-  - namespace.yaml
-  - sa-token.yaml
-  - kasten-admin-binding.yaml
+# cluster-infra/infrastructure/kasten-io/base/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
 
-configMapGenerator:
-  - name: kasten-values
-    files:
-      - values.yaml
+resources:
+  - rbac.yaml

@@ -1,7 +1,8 @@
+# infrastructure/kasten-io/overlays/dr/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: kasten-io
-
 resources:
-  - ../../base
+  - ../../base/rbac.yaml       # reuse your base RBAC
+  - kasten-io.yaml             # the Application manifest
+  - values-dr.yaml             # DR-specific values
