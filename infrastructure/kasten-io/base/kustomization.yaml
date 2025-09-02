@@ -1,6 +1,7 @@
-# cluster-infra/infrastructure/kasten-io/base/kustomization.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+
+namespace: kasten-io
 
 resources:
   - rbac.yaml
