@@ -8,4 +8,4 @@ resources:
   - ../../infrastructure/monitoring/overlays/dr
   - ../../infrastructure/vault/overlays/dr
   - ../../infrastructure/kasten-io/overlays/dr
-  - ../../infrastructure/metrics-server/overlays/dr
+  - metrics-server.yaml
