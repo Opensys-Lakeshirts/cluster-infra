@@ -6,13 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/Opensys-Lakeshirts/cluster-infra
-    targetRevision: dev
-    path: infrastructure/kasten-io/overlays/dr
+    repoURL: https://charts.kasten.io/
+    chart: k10
+    targetRevision: 7.5.1
     helm:
       releaseName: kasten-io
       valueFiles:
-        - values-dr.yaml
+        - infrastructure/kasten-io/overlays/dr/values-dr.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: kasten-io
