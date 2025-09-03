@@ -21,10 +21,10 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 64Mi
+            memory: 64Mi     # ✅ safe request
           limits:
             cpu: 250m
-            memory: 256Mi
+            memory: 256Mi    # ✅ higher than request
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
@@ -34,3 +34,5 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - PruneLast=true
+      - ServerSideApply=true
