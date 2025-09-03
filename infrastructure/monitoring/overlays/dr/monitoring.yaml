@@ -25,7 +25,7 @@ spec:
             serviceMonitorSelectorNilUsesHelmValues: false
             resources:
               requests:
-                memory: "512Mi"                     # leaner in standby
+                memory: "512Mi"
                 cpu: "200m"
               limits:
                 memory: "1Gi"
@@ -62,7 +62,6 @@ spec:
 
         # ---- Grafana ----
         grafana:
-          # Prefer secret over inline password; create secret grafana-admin (keys: admin-user, admin-password)
           replicas: 1
           admin:
             existingSecret: grafana-admin
@@ -71,14 +70,13 @@ spec:
           persistence:
             enabled: true
             size: 10Gi
-            storageClassName: azurefile-csi         # RWX so the pod can move nodes
+            storageClassName: azurefile-csi         # RWX so pod can move nodes
           service:
             type: ClusterIP
           ingress:
             enabled: false
-          plugins:
-            - grafana-piechart-panel
-            - grafana-clock-panel
+          env:                                      # ✅ use GF_PLUGINS_PREINSTALL
+            GF_PLUGINS_PREINSTALL: grafana-piechart-panel,grafana-clock-panel
           sidecar:
             dashboards:
               enabled: false
