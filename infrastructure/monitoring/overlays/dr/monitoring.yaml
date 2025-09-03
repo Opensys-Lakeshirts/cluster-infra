@@ -63,6 +63,7 @@ spec:
         # ---- Grafana ----
         grafana:
           # Prefer secret over inline password; create secret grafana-admin (keys: admin-user, admin-password)
+          replicas: 1
           admin:
             existingSecret: grafana-admin
             userKey: admin-user
