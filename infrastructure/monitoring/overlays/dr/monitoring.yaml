@@ -68,9 +68,10 @@ spec:
             userKey: admin-user
             passwordKey: admin-password
           persistence:
+            type: pvc                     
             enabled: true
             size: 10Gi
-            storageClassName: managed-csi   # ✅ switched from azurefile-csi to managed-csi (Azure Disk)
+            storageClassName: managed-csi   
           service:
             type: ClusterIP
           ingress:
