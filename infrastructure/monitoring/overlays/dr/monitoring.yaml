@@ -78,12 +78,18 @@ spec:
           plugins:
             - grafana-piechart-panel
             - grafana-clock-panel
+          sidecar:
+            dashboards:
+              enabled: false
+            datasources:
+              enabled: false
 
-        # ---- Node Exporter (safe defaults for AKS) ----
+        # ---- Node Exporter ----
         prometheus-node-exporter:
           hostRootFsMount:
             enabled: false
 
+        # ---- Prometheus Operator ----
         prometheusOperator:
           resources:
             requests:
@@ -92,6 +98,7 @@ spec:
             limits:
               memory: "200Mi"
               cpu: "200m"
+
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
