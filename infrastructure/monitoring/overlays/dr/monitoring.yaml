@@ -136,3 +136,8 @@ spec:
       kind: PrometheusRule
       jqPathExpressions:
         - .spec.groups[].rules[].annotations
+    - group: apps
+      kind: Deployment
+      name: monitoring-grafana
+      jsonPointers:
+        - /spec/strategy/rollingUpdate
