@@ -105,4 +105,36 @@ spec:
           hostRootFsMount:
             enabled: false
 
-        # ---- Promet
+        # ---- Prometheus Operator ----
+        prometheusOperator:
+          resources:
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: monitoring
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - SkipDryRunOnMissingResource=true
+      - ServerSideApply=true
+      - PruneLast=true
+  ignoreDifferences:
+    - group: monitoring.coreos.com
+      kind: Prometheus
+      jsonPointers: ["/status"]
+    - group: monitoring.coreos.com
+      kind: Alertmanager
+      jsonPointers: ["/status"]
+    - group: monitoring.coreos.com
+      kind: PrometheusRule
+      jqPathExpressions:
+        - .spec.groups[].rules[].annotations
