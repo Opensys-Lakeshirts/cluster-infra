@@ -60,26 +60,27 @@ spec:
                     requests:
                       storage: 5Gi
 
-        # ---- Grafana (fixed persistence) ----
+        # ---- Grafana ----
         grafana:
           replicas: 1
           deploymentStrategy:
-            type: Recreate
-            rollingUpdate: null
+            type: RollingUpdate
+            rollingUpdate:
+              maxSurge: 0
+              maxUnavailable: 1
           admin:
             existingSecret: grafana-admin
             userKey: admin-user
             passwordKey: admin-password
           persistence:
-            type: pvc                     
+            type: pvc
             enabled: true
             size: 10Gi
-            storageClassName: managed-csi   
+            storageClassName: managed-csi
           service:
             type: ClusterIP
           ingress:
             enabled: false
-          # Avoid deprecated GF_INSTALL_PLUGINS path via ConfigMap
           env:
             GF_PLUGINS_PREINSTALL: grafana-clock-panel
           grafana.ini:
@@ -92,7 +93,7 @@ spec:
               logs: /var/log/grafana
               plugins: /var/lib/grafana/plugins
               provisioning: /etc/grafana/provisioning
-            security: {}     # explicitly empty -> prevents helm secret-leak assertion
+            security: {}
           sidecar:
             dashboards:
               enabled: false
@@ -104,41 +105,4 @@ spec:
           hostRootFsMount:
             enabled: false
 
-        # ---- Prometheus Operator ----
-        prometheusOperator:
-          resources:
-            requests:
-              memory: "100Mi"
-              cpu: "100m"
-            limits:
-              memory: "200Mi"
-              cpu: "200m"
-
-  destination:
-    server: https://kubernetes.default.svc
-    namespace: monitoring
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - SkipDryRunOnMissingResource=true
-      - ServerSideApply=true
-      - PruneLast=true
-  ignoreDifferences:
-    - group: monitoring.coreos.com
-      kind: Prometheus
-      jsonPointers: ["/status"]
-    - group: monitoring.coreos.com
-      kind: Alertmanager
-      jsonPointers: ["/status"]
-    - group: monitoring.coreos.com
-      kind: PrometheusRule
-      jqPathExpressions:
-        - .spec.groups[].rules[].annotations
-    - group: apps
-      kind: Deployment
-      name: monitoring-grafana
-      jsonPointers:
-        - /spec/strategy/rollingUpdate
+        # ---- Promet
