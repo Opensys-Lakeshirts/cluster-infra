@@ -65,6 +65,7 @@ spec:
           replicas: 1
           deploymentStrategy:
             type: Recreate
+            rollingUpdate: null
           admin:
             existingSecret: grafana-admin
             userKey: admin-user
