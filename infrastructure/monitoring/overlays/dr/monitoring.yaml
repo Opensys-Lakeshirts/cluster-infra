@@ -76,7 +76,6 @@ spec:
           ingress:
             enabled: false
           # Avoid deprecated GF_INSTALL_PLUGINS path via ConfigMap
-          plugins: []   # ensures no "plugins" key is rendered into monitoring-grafana CM
           env:
             GF_PLUGINS_PREINSTALL: grafana-piechart-panel,grafana-clock-panel
           grafana.ini:
