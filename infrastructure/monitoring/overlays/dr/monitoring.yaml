@@ -11,7 +11,7 @@ spec:
     targetRevision: 75.15.1
     helm:
       values: |
-        # ---- Prometheus (unchanged, lean) ----
+        # ---- Prometheus ----
         prometheus:
           prometheusSpec:
             image:
@@ -24,35 +24,43 @@ spec:
             evaluationInterval: 30s
             serviceMonitorSelectorNilUsesHelmValues: false
             resources:
-              requests: { memory: "512Mi", cpu: "200m" }
-              limits:   { memory: "1Gi",   cpu: "500m" }
+              requests:
+                memory: "512Mi"
+                cpu: "200m"
+              limits:
+                memory: "1Gi"
+                cpu: "500m"
             storageSpec:
               volumeClaimTemplate:
                 spec:
                   storageClassName: managed-csi
-                  accessModes: ["ReadWriteOnce"]
+                  accessModes: [ "ReadWriteOnce" ]
                   resources:
                     requests:
                       storage: 10Gi
           service:
             type: ClusterIP
 
-        # ---- Alertmanager (unchanged, lean) ----
+        # ---- Alertmanager ----
         alertmanager:
           alertmanagerSpec:
             resources:
-              requests: { memory: "100Mi", cpu: "50m" }
-              limits:   { memory: "200Mi", cpu: "100m" }
+              requests:
+                memory: "100Mi"
+                cpu: "50m"
+              limits:
+                memory: "200Mi"
+                cpu: "100m"
             storage:
               volumeClaimTemplate:
                 spec:
                   storageClassName: managed-csi
-                  accessModes: ["ReadWriteOnce"]
+                  accessModes: [ "ReadWriteOnce" ]
                   resources:
                     requests:
                       storage: 5Gi
 
-        # ---- Grafana (minimal & fast) ----
+        # ---- Grafana (NO inline secrets) ----
         grafana:
           replicas: 1
           admin:
@@ -60,37 +68,48 @@ spec:
             userKey: admin-user
             passwordKey: admin-password
           persistence:
-            enabled: false            # <- no PVC; avoids sqlite locks, fastest boot
+            enabled: true
+            size: 10Gi
+            storageClassName: azurefile-csi
           service:
             type: ClusterIP
           ingress:
             enabled: false
-          plugins: []                 # <- no plugin CM/env
-          env: {}                     # <- do not set GF_* vars; keep it clean
-          grafana.ini:                # <- minimal, **no security section** (no inline secrets)
-            log:
-              mode: console
+          # Avoid deprecated GF_INSTALL_PLUGINS path via ConfigMap
+          plugins: []   # ensures no "plugins" key is rendered into monitoring-grafana CM
+          env:
+            GF_PLUGINS_PREINSTALL: grafana-piechart-panel,grafana-clock-panel
+          grafana.ini:
             analytics:
               check_for_updates: true
+            log:
+              mode: console
             paths:
               data: /var/lib/grafana
               logs: /var/log/grafana
               plugins: /var/lib/grafana/plugins
               provisioning: /etc/grafana/provisioning
+            security: {}     # explicitly empty -> prevents helm secret-leak assertion
           sidecar:
-            dashboards: { enabled: false }
-            datasources: { enabled: false }
+            dashboards:
+              enabled: false
+            datasources:
+              enabled: false
 
-        # ---- Node Exporter safe default ----
+        # ---- Node Exporter ----
         prometheus-node-exporter:
           hostRootFsMount:
             enabled: false
 
-        # ---- Operator small footprint ----
+        # ---- Prometheus Operator ----
         prometheusOperator:
           resources:
-            requests: { memory: "100Mi", cpu: "100m" }
-            limits:   { memory: "200Mi", cpu: "200m" }
+            requests:
+              memory: "100Mi"
+              cpu: "100m"
+            limits:
+              memory: "200Mi"
+              cpu: "200m"
 
   destination:
     server: https://kubernetes.default.svc
