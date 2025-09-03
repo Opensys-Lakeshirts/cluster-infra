@@ -30,14 +30,13 @@ spec:
             storageSpec:
               volumeClaimTemplate:
                 spec:
-                  storageClassName: local-path
+                  storageClassName: managed-csi            # <— AKS disk
                   accessModes: [ "ReadWriteOnce" ]
                   resources:
                     requests:
                       storage: 20Gi
           service:
-            type: NodePort
-            nodePort: 30005
+            type: ClusterIP                                 # NodePort won’t be reachable externally on AKS nodes
         alertmanager:
           alertmanagerSpec:
             resources:
@@ -50,7 +49,7 @@ spec:
             storage:
               volumeClaimTemplate:
                 spec:
-                  storageClassName: local-path
+                  storageClassName: managed-csi            # <— AKS disk
                   accessModes: [ "ReadWriteOnce" ]
                   resources:
                     requests:
@@ -60,12 +59,11 @@ spec:
           persistence:
             enabled: true
             size: 10Gi
-            storageClassName: local-path
+            storageClassName: azurefile-csi                # <— AKS file share (pod can move nodes)
           service:
-            type: NodePort
-            nodePort: 30004
+            type: ClusterIP
           ingress:
-            enabled: false
+            enabled: false                                  # enable later if you add an Ingress/LB
           plugins:
             - grafana-piechart-panel
             - grafana-clock-panel
@@ -95,9 +93,7 @@ spec:
   ignoreDifferences:
     - group: monitoring.coreos.com
       kind: Prometheus
-      jsonPointers:
-        - /status
+      jsonPointers: ["/status"]
     - group: monitoring.coreos.com
       kind: Alertmanager
-      jsonPointers:
-        - /status
+      jsonPointers: ["/status"]

@@ -4,7 +4,7 @@ metadata:
   name: cluster-infra
   namespace: argocd
 spec:
-  project: default   # <-- REQUIRED
+  project: default   
   source:
     repoURL: https://github.com/Opensys-Lakeshirts/cluster-infra
     targetRevision: dev
