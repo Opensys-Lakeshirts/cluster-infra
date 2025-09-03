@@ -10,8 +10,14 @@ spec:
     chart: metrics-server
     targetRevision: 3.13.0
     helm:
-      valueFiles:
-        - values-dr.yaml   
+      values: |
+        args:
+          - --kubelet-insecure-tls
+          - --kubelet-preferred-address-types=InternalIP
+        nodeSelector:
+          kubernetes.io/os: linux
+        podDisruptionBudget:
+          enabled: true
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
