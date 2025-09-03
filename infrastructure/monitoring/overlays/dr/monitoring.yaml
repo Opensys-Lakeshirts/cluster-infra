@@ -67,6 +67,8 @@ spec:
             existingSecret: grafana-admin
             userKey: admin-user
             passwordKey: admin-password
+          adminPassword: null    # ✅ prevent inline password
+          adminUser: null        # ✅ prevent inline user
           persistence:
             enabled: true
             size: 10Gi
@@ -77,7 +79,7 @@ spec:
             enabled: false
           env:
             GF_PLUGINS_PREINSTALL: grafana-piechart-panel,grafana-clock-panel
-          grafana.ini:                           # ✅ ensures ConfigMap is created
+          grafana.ini:                           # ✅ ConfigMap is safe
             analytics:
               check_for_updates: true
             log:
@@ -87,9 +89,6 @@ spec:
               logs: /var/log/grafana
               plugins: /var/lib/grafana/plugins
               provisioning: /etc/grafana/provisioning
-            security:
-              admin_user: admin
-              admin_password: admin
           sidecar:
             dashboards:
               enabled: false
