@@ -60,7 +60,7 @@ spec:
                     requests:
                       storage: 5Gi
 
-        # ---- Grafana ----
+        # ---- Grafana (NO inline secrets) ----
         grafana:
           replicas: 1
           admin:
@@ -75,6 +75,8 @@ spec:
             type: ClusterIP
           ingress:
             enabled: false
+          # Avoid deprecated GF_INSTALL_PLUGINS path via ConfigMap
+          plugins: []   # ensures no "plugins" key is rendered into monitoring-grafana CM
           env:
             GF_PLUGINS_PREINSTALL: grafana-piechart-panel,grafana-clock-panel
           grafana.ini:
@@ -87,6 +89,7 @@ spec:
               logs: /var/log/grafana
               plugins: /var/lib/grafana/plugins
               provisioning: /etc/grafana/provisioning
+            security: {}     # explicitly empty -> prevents helm secret-leak assertion
           sidecar:
             dashboards:
               enabled: false
