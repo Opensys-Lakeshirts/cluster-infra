@@ -11,7 +11,7 @@ spec:
     targetRevision: 75.15.1
     helm:
       values: |
-        # ---- Prometheus (lighter for DR; bump on failover) ----
+        # ---- Prometheus ----
         prometheus:
           prometheusSpec:
             image:
@@ -19,7 +19,7 @@ spec:
               repository: prometheus/prometheus
               tag: v2.54.1
               pullPolicy: IfNotPresent
-            retention: 3d                           # DR: smaller; increase after failover
+            retention: 3d
             scrapeInterval: 30s
             evaluationInterval: 30s
             serviceMonitorSelectorNilUsesHelmValues: false
@@ -33,11 +33,11 @@ spec:
             storageSpec:
               volumeClaimTemplate:
                 spec:
-                  storageClassName: managed-csi     # AKS Disk (StandardSSD_ZRS)
+                  storageClassName: managed-csi
                   accessModes: [ "ReadWriteOnce" ]
                   resources:
                     requests:
-                      storage: 10Gi                 # DR: smaller; expand on failover
+                      storage: 10Gi
           service:
             type: ClusterIP
 
@@ -70,13 +70,26 @@ spec:
           persistence:
             enabled: true
             size: 10Gi
-            storageClassName: azurefile-csi         # RWX so pod can move nodes
+            storageClassName: azurefile-csi
           service:
             type: ClusterIP
           ingress:
             enabled: false
-          env:                                      # ✅ use GF_PLUGINS_PREINSTALL
+          env:
             GF_PLUGINS_PREINSTALL: grafana-piechart-panel,grafana-clock-panel
+          grafana.ini:                           # ✅ ensures ConfigMap is created
+            analytics:
+              check_for_updates: true
+            log:
+              mode: console
+            paths:
+              data: /var/lib/grafana
+              logs: /var/log/grafana
+              plugins: /var/lib/grafana/plugins
+              provisioning: /etc/grafana/provisioning
+            security:
+              admin_user: admin
+              admin_password: admin
           sidecar:
             dashboards:
               enabled: false
