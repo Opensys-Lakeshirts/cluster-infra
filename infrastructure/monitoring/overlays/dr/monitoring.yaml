@@ -60,7 +60,7 @@ spec:
                     requests:
                       storage: 5Gi
 
-        # ---- Grafana (NO inline secrets) ----
+        # ---- Grafana (fixed persistence) ----
         grafana:
           replicas: 1
           admin:
@@ -70,14 +70,14 @@ spec:
           persistence:
             enabled: true
             size: 10Gi
-            storageClassName: azurefile-csi
+            storageClassName: managed-csi   # ✅ switched from azurefile-csi to managed-csi (Azure Disk)
           service:
             type: ClusterIP
           ingress:
             enabled: false
           # Avoid deprecated GF_INSTALL_PLUGINS path via ConfigMap
           env:
-            GF_PLUGINS_PREINSTALL: grafana-piechart-panel,grafana-clock-panel
+            GF_PLUGINS_PREINSTALL: grafana-clock-panel
           grafana.ini:
             analytics:
               check_for_updates: true
