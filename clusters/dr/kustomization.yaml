@@ -10,3 +10,4 @@ resources:
   - ../../infrastructure/kasten-io/overlays/dr
   - ../../infrastructure/metrics-server/overlays/dr
   - ../../infrastructure/pod-security/overlays/dr
+  - ../../infrastructure/priority-classes/overlays/dr
