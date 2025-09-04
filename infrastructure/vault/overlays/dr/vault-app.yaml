@@ -18,7 +18,7 @@ spec:
         server:
           ha:
             enabled: true
-            replicas: 1    # 👈 testing mode: 1 pod running
+            replicas: 1    # 👈 testing with 1 pod
             raft:
               enabled: true
               setNodeId: true
@@ -38,9 +38,10 @@ spec:
                 service_registration "kubernetes" {}
                 disable_mlock = true
 
+          # ✅ Persistent storage for Raft
           dataStorage:
             enabled: true
-            storageClass: managed-csi   # ✅ recommended for Raft
+            storageClass: managed-csi
             size: 8Gi
 
           volumePermissions:
