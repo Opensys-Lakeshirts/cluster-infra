@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  # on-prem infra
   - ../../infrastructure/argocd/overlays/dr
   - ../../infrastructure/cert-manager/overlays/dr
   - ../../infrastructure/kyverno/overlays/dr
@@ -16,3 +17,5 @@ resources:
   - ../../infrastructure/resource-quotas/overlays/dr
   - ../../infrastructure/ingress-controller/overlays/dr
   - ../../infrastructure/argo-rollouts/overlays/dr
+  # applications
+  - ../../applications/microservices-demo/overlays/dr

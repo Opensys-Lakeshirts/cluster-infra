@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: microservices-demo-dr
+  namespace: microservices-demo
+  annotations:
+    kubernetes.io/ingress.class: "haproxy"
+    haproxy.org/ssl-redirect: "false"
+spec:
+  ingressClassName: haproxy
+  rules:
+    - host: microservices.48.216.146.66.nip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: front-end
+                port:
+                  number: 80
