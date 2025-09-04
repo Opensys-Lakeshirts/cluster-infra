@@ -10,9 +10,28 @@ spec:
     chart: k10
     targetRevision: 7.5.1
     helm:
-      releaseName: kasten-io
-      valueFiles:
-        - infrastructure/kasten-io/overlays/dr/values-dr.yaml
+      values: |
+        eula:
+          accept: true
+          company: "Lakeshirts"
+          email: "suyash@4gd.ai"
+        auth:
+          tokenAuth:
+            enabled: true
+        externalGateway:
+          create: true
+          serviceType: LoadBalancer
+          ports:
+            http:
+              port: 80
+              targetPort: 8000
+          ingress:
+            enabled: true
+            paths:
+              - /k10/
+        global:
+          persistence:
+            storageClass: local-path
   destination:
     server: https://kubernetes.default.svc
     namespace: kasten-io
@@ -22,3 +41,37 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+
+---
+# --- Service Account ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: k10-admin
+  namespace: kasten-io
+
+---
+# --- Cluster Role Binding ---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: k10-admin-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: k10-admin
+  namespace: kasten-io
+
+---
+# --- Service Account Token ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: k10-admin-token
+  namespace: kasten-io
+  annotations:
+    kubernetes.io/service-account.name: k10-admin
+type: kubernetes.io/service-account-token
