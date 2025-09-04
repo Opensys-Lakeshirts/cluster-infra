@@ -80,7 +80,17 @@ spec:
           service:
             type: ClusterIP
           ingress:
-            enabled: false
+            enabled: true
+            ingressClassName: haproxy
+            annotations:
+              cert-manager.io/cluster-issuer: letsencrypt-prod
+              haproxy.ingress.kubernetes.io/ssl-redirect: "true"
+            hosts:
+              - grafana.48.216.146.66.nip.io
+            tls:
+              - hosts:
+                  - grafana.48.216.146.66.nip.io
+                secretName: grafana-tls
           env:
             GF_PLUGINS_PREINSTALL: grafana-clock-panel
           grafana.ini:
