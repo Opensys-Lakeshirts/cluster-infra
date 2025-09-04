@@ -21,7 +21,7 @@ spec:
           ports:
             - name: https
               port: 443
-              targetPort: 10250   # must match containerPort from Deployment
+              targetPort: 10250
         nodeSelector:
           kubernetes.io/os: linux
         podDisruptionBudget:

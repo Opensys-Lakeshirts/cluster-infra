@@ -14,3 +14,4 @@ resources:
   - ../../infrastructure/node-problem-detector/overlays/dr
   - ../../infrastructure/resource-quotas/overlays/dr
   - ../../infrastructure/ingress-controller/overlays/dr
+  - ../../infrastructure/argo-rollouts/overlays/dr
