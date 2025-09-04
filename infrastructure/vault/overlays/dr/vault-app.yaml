@@ -18,7 +18,7 @@ spec:
         server:
           ha:
             enabled: true
-            replicas: 3 
+            replicas: 3   # 3 Vault pods → each gets its own PVC
             raft:
               enabled: true
               setNodeId: true
@@ -38,15 +38,17 @@ spec:
                 service_registration "kubernetes" {}
                 disable_mlock = true
 
-          # ✅ Persistent storage for Raft
+          # Persistent Raft storage (each pod gets its own PVC)
           dataStorage:
             enabled: true
             storageClass: managed-csi
             size: 8Gi
 
+          # Allow init containers to chown/fix permissions
           volumePermissions:
             enabled: true
 
+          # Non-root security context
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
@@ -72,6 +74,7 @@ spec:
                   - vault.dr.example.corp
                 secretName: vault-dr-tls
 
+          # Ensure pods spread across nodes
           affinity: |
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
@@ -87,6 +90,7 @@ spec:
 
         injector:
           enabled: false
+
   destination:
     server: https://kubernetes.default.svc
     namespace: vault
@@ -96,4 +100,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - Replace=true # ✅ auto-recreate if immutable fields change
+      - Replace=true   # auto-recreate if immutable fields change
