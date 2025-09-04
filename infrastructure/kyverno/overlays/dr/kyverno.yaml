@@ -26,4 +26,9 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - Replace=true
+  ignoreDifferences:
+  - group: admissionregistration.k8s.io
+    kind: MutatingWebhookConfiguration
+    jsonPointers:
+    - /webhooks/0/clientConfig/caBundle
 
