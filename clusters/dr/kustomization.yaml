@@ -11,3 +11,5 @@ resources:
   - ../../infrastructure/metrics-server/overlays/dr
   - ../../infrastructure/pod-security/overlays/dr
   - ../../infrastructure/priority-classes/overlays/dr
+  - ../../infrastructure/node-problem-detector/overlays/dr
+  - ../../infrastructure/resource-quotas/overlays/dr

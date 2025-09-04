@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: resource-quotas
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
+    targetRevision: dev
+    path: infrastructure/resource-quotas
+  destination:
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
