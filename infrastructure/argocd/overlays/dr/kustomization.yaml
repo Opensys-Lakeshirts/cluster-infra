@@ -3,4 +3,6 @@ kind: Kustomization
 
 resources:
   - ingress.yaml
+
+patchesStrategicMerge:
   - argocd-cm-patch.yaml
