@@ -16,8 +16,11 @@ spec:
           - --kubelet-insecure-tls
           - --metric-resolution=30s
         service:
-          port: 443
-          targetPort: https
+          type: ClusterIP
+          ports:
+            - name: https
+              port: 443
+              targetPort: https
         nodeSelector:
           kubernetes.io/os: linux
         podDisruptionBudget:
