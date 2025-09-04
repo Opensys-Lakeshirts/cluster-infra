@@ -21,7 +21,7 @@ spec:
           ports:
             - name: https
               port: 443
-              targetPort: 10250
+              targetPort: 10250   # must match containerPort from Deployment
         nodeSelector:
           kubernetes.io/os: linux
         podDisruptionBudget:
@@ -62,31 +62,3 @@ spec:
         - .spec.sessionAffinity
         - .spec.ports[]?.appProtocol
         - .spec.ports[]?.nodePort
-        - .spec.ports[]?.targetPort
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: system:metrics-server
-      jqPathExpressions:
-        - .metadata.annotations
-        - .metadata.labels
-        - .rules
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRoleBinding
-      name: metrics-server:system:auth-delegator
-      jqPathExpressions:
-        - .metadata.annotations
-        - .metadata.labels
-        - .subjects
-    - group: rbac.authorization.k8s.io
-      kind: RoleBinding
-      namespace: kube-system
-      name: metrics-server-auth-reader
-      jqPathExpressions:
-        - .metadata.annotations
-        - .metadata.labels
-    - group: apiregistration.k8s.io
-      kind: APIService
-      name: v1beta1.metrics.k8s.io
-      jqPathExpressions:
-        - .metadata.annotations
-        - .metadata.labels
