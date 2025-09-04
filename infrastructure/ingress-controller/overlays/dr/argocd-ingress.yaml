@@ -1,19 +1,35 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
+apiVersion: argoproj.io/v1alpha1
+kind: Application
 metadata:
-  name: argocd-ingress
+  name: ingress-controller
   namespace: argocd
 spec:
-  ingressClassName: haproxy
-  rules:
-    - host: 192.168.101.191.nip.io
-      http:
-        paths:
-          - path: /argo-cd
-            pathType: Prefix
-            backend:
-              service:
-                name: argocd-server
-                port:
-                  number: 80
+  project: default
+  source:
+    repoURL: https://haproxytech.github.io/helm-charts
+    chart: kubernetes-ingress
+    targetRevision: 1.44.0
+    helm:
+      values: |
+        controller:
+          ingressClassResource:
+            default: true
+            name: haproxy
+          ingressClass: haproxy
+          service:
+            type: LoadBalancer
+            annotations:
+              service.beta.kubernetes.io/azure-load-balancer-health-probe-request-path: /healthz
+            labels:
+              app.kubernetes.io/name: kubernetes-ingress
+              app.kubernetes.io/instance: ingress-controller
 
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-controller
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
