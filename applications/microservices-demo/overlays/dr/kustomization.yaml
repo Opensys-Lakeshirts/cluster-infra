@@ -6,9 +6,3 @@ resources:
   - ../../base
   - ingress.yaml
   - front-end-hpa.yaml
-
-patches:
-  - path: patches/front-end-replicas.yaml
-    target:
-      kind: Deployment
-      name: front-end
