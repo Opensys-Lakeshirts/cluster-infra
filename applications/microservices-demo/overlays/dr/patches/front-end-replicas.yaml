@@ -5,5 +5,3 @@ metadata:
   namespace: microservices-demo
 spec:
   replicas: 0
-  selector: {}        # placeholder
-  template: {}        # placeholder
