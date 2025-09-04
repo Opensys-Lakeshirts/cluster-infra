@@ -8,12 +8,12 @@ spec:
   source:
     repoURL: https://kubernetes-sigs.github.io/metrics-server/
     chart: metrics-server
-    targetRevision: 3.13.0
+    targetRevision: 3.12.2
     helm:
       values: |
         args:
-          - --kubelet-insecure-tls
           - --kubelet-preferred-address-types=InternalIP
+          - --metric-resolution=30s
         nodeSelector:
           kubernetes.io/os: linux
         podDisruptionBudget:
@@ -21,10 +21,10 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 64Mi     # ✅ safe request
+            memory: 64Mi
           limits:
             cpu: 250m
-            memory: 256Mi    # ✅ higher than request
+            memory: 256Mi
   destination:
     server: https://kubernetes.default.svc
     namespace: kube-system
@@ -34,5 +34,51 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
+      - ResetValues=true
       - PruneLast=true
+      - RespectIgnoreDifferences=true
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: ""
+      kind: Service
+      namespace: kube-system
+      name: metrics-server
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+        - .spec.clusterIP
+        - .spec.clusterIPs
+        - .spec.ipFamilies
+        - .spec.ipFamilyPolicy
+        - .spec.internalTrafficPolicy
+        - .spec.sessionAffinity
+        - .spec.ports[]?.appProtocol
+        - .spec.ports[]?.nodePort
+        - .spec.ports[]?.targetPort
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: system:metrics-server
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+        - .rules
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+      name: metrics-server:system:auth-delegator
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+        - .subjects
+    - group: rbac.authorization.k8s.io
+      kind: RoleBinding
+      namespace: kube-system
+      name: metrics-server-auth-reader
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
+    - group: apiregistration.k8s.io
+      kind: APIService
+      name: v1beta1.metrics.k8s.io
+      jqPathExpressions:
+        - .metadata.annotations
+        - .metadata.labels
