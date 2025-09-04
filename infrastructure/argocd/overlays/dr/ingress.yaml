@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-server-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    haproxy.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  ingressClassName: haproxy
+  rules:
+  - host: argocd.48.216.146.66.nip.io   # 👈 HAProxy LB IP with nip.io
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - argocd.48.216.146.66.nip.io
+    secretName: argocd-server-tls
