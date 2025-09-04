@@ -13,7 +13,11 @@ spec:
       values: |
         args:
           - --kubelet-preferred-address-types=InternalIP
+          - --kubelet-insecure-tls
           - --metric-resolution=30s
+        service:
+          port: 443
+          targetPort: https
         nodeSelector:
           kubernetes.io/os: linux
         podDisruptionBudget:
