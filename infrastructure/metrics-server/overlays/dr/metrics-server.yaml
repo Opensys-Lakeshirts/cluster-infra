@@ -17,9 +17,6 @@ spec:
           - --metric-resolution=30s
         service:
           type: ClusterIP
-          selector:
-            app.kubernetes.io/instance: metrics-server
-            app.kubernetes.io/name: metrics-server
           ports:
             - name: https
               port: 443
