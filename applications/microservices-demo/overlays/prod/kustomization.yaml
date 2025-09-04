@@ -4,5 +4,4 @@ namespace: microservices-demo  # <--- Add this line!
 resources:
   - ../../base
   - front-end-hpa.yaml
-  - simple-nodeport.yaml
   - working-ingress.yaml
