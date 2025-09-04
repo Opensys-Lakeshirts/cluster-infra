@@ -23,7 +23,7 @@ spec:
           ports:
             - name: https
               port: 443
-              targetPort: https
+              targetPort: 443
         nodeSelector:
           kubernetes.io/os: linux
         podDisruptionBudget:
