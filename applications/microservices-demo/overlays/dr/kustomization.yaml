@@ -4,5 +4,11 @@ namespace: microservices-demo
 
 resources:
   - ../../base
-  - front-end-hpa.yaml
   - ingress.yaml
+  - front-end-hpa.yaml
+
+patches:
+  - path: patches/front-end-replicas.yaml
+    target:
+      kind: Deployment
+      name: front-end
