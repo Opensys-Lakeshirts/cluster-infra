@@ -18,7 +18,7 @@ spec:
         server:
           ha:
             enabled: true
-            replicas: 1    # 👈 testing with 1 pod
+            replicas: 3 
             raft:
               enabled: true
               setNodeId: true
@@ -96,4 +96,4 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-      - Replace=true     # ✅ auto-recreate if immutable fields change
+      - Replace=true # ✅ auto-recreate if immutable fields change
