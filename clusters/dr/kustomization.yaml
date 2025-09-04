@@ -13,3 +13,4 @@ resources:
   - ../../infrastructure/priority-classes/overlays/dr
   - ../../infrastructure/node-problem-detector/overlays/dr
   - ../../infrastructure/resource-quotas/overlays/dr
+  - ../../infrastructure/ingress-controller/overlays/dr
