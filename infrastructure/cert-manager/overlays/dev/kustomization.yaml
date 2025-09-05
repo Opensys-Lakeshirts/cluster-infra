@@ -3,4 +3,4 @@ kind: Kustomization
 
 resources:
   - cert-manager.yaml
-  - clusterissuer-prod.yaml
+  # - clusterissuer-prod.yaml
