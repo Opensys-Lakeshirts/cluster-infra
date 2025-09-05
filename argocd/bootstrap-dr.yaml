@@ -1,10 +1,10 @@
+# argocd/bootstrap-dr.yaml
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: cluster-infra
   namespace: argocd
 spec:
-  project: default   
   source:
     repoURL: https://github.com/Opensys-Lakeshirts/cluster-infra
     targetRevision: dev
@@ -12,7 +12,3 @@ spec:
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
-  syncPolicy:
-    automated:
-      prune: true
-      selfHeal: true
