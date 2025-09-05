@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: node-problem-detector
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/4gd-Lakeshirts/cluster-infra
+    targetRevision: dev
+    path: infrastructure/node-problem-detector
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
