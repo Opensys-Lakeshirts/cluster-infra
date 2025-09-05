@@ -4,7 +4,7 @@ resources:
   # Infrastructure components for on-prem (dev)
   - ../../infrastructure/cert-manager/overlays/dev
   - ../../infrastructure/ingress-controller/overlays/dev
-  - ../../infrastructure/kyverno/overlays/dev
+  # - ../../infrastructure/kyverno/overlays/dev
   - ../../infrastructure/logging/overlays/dev
   - ../../infrastructure/metallb/overlays/dev
   - ../../infrastructure/monitoring/overlays/dev
