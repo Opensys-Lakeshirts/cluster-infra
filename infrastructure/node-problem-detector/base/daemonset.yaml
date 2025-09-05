@@ -17,7 +17,6 @@ spec:
     spec:
       serviceAccountName: node-problem-detector
       priorityClassName: lakeshirts-critical
-      # hostNetwork: true
       tolerations:
         - operator: Exists
           effect: NoSchedule
@@ -34,9 +33,8 @@ spec:
             - --config.system-log-monitor=/config/kernel-monitor.json,/config/docker-monitor.json
             - --config.system-stats-monitor=/config/system-stats-monitor.json
             - --config.custom-plugin-monitor=/config/custom-plugin-monitor.json
-            # Change ports to avoid conflicts with any existing process
-            - --port=20256
-            - --prometheus-port=20256
+            - --port=20256                # gRPC
+            - --prometheus-port=20257     # Prometheus metrics (different port!)
           env:
             - name: NODE_NAME
               valueFrom:
@@ -52,9 +50,8 @@ spec:
               cpu: 20m
               memory: 20Mi
           ports:
-            - containerPort: 20256
-              hostPort: 20256
-              name: exporter
+            - containerPort: 20257
+              name: metrics
               protocol: TCP
           volumeMounts:
             - name: log
@@ -72,7 +69,7 @@ spec:
       volumes:
         - name: log
           hostPath:
-            path: /var/log/
+            path: /var/log
         - name: kmsg
           hostPath:
             path: /dev/kmsg
