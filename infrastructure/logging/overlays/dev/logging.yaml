@@ -15,8 +15,7 @@ spec:
           config:
             table_manager:
               retention_deletes_enabled: true
-              retention_period: 7d  # keep logs for 7 days
-
+              retention_period: 7d
           persistence:
             enabled: true
             size: 20Gi
@@ -24,6 +23,9 @@ spec:
 
         promtail:
           enabled: true
+          config:
+            clients:
+              - url: http://logging-loki:3100/loki/api/v1/push
   destination:
     server: https://kubernetes.default.svc
     namespace: logging
@@ -33,4 +35,3 @@ spec:
       selfHeal: true
     syncOptions:
       - CreateNamespace=true
-
