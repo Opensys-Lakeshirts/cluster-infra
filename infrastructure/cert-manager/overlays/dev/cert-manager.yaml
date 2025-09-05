@@ -1,21 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cert-manager
+  name: cert-manager-crds
   namespace: argocd
 spec:
   project: default
   source:
-    repoURL: https://charts.jetstack.io
-    chart: cert-manager
+    repoURL: https://github.com/cert-manager/cert-manager.git
     targetRevision: v1.18.1
-    helm:
-      values: |
-        installCRDs: true
-        ingressShim:
-          defaultIssuerName: letsencrypt-prod
-          defaultIssuerKind: ClusterIssuer
-          defaultIssuerGroup: cert-manager.io
+    path: deploy/crds
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
@@ -23,21 +16,3 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
-      - CreateNamespace=true
-      - CRD=CreateReplace
-  ignoreDifferences:
-    - group: admissionregistration.k8s.io
-      kind: ValidatingWebhookConfiguration
-      name: cert-manager-webhook
-      jsonPointers:
-        - /webhooks
-    - group: admissionregistration.k8s.io
-      kind: MutatingWebhookConfiguration
-      name: cert-manager-webhook
-      jsonPointers:
-        - /webhooks
-    - group: apiextensions.k8s.io
-      kind: CustomResourceDefinition
-      jsonPointers:
-        - /status
