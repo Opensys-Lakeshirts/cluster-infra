@@ -23,7 +23,7 @@ spec:
     automated:
       prune: true
       selfHeal: true
-    syncOptions:
+    syncOptions: 
       - CreateNamespace=true
   ignoreDifferences:
     # Ignore dynamic mutations on ValidatingWebhookConfiguration
