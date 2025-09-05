@@ -11,10 +11,17 @@ spec:
     targetRevision: 75.15.1
     helm:
       values: |
-        # ---- Disable CRDs in Helm (applied separately) ----
+        # Use cert-manager for admission webhook certs and disable patch job (no RBAC hooks)
+        admissionWebhooks:
+          enabled: true
+          patch:
+            enabled: false
+          certManager:
+            enabled: true
+
+        # ---- Disable CRDs in Helm (you already apply them separately) ----
         prometheusOperator:
           createCustomResource: false
-          # some charts use installCRDs instead, but kube-prometheus-stack relies on prometheus-operator bundle
 
         prometheus:
           prometheusSpec:
@@ -91,7 +98,6 @@ spec:
             limits:
               memory: "200Mi"
               cpu: "200m"
-
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring
@@ -104,27 +110,13 @@ spec:
       - SkipDryRunOnMissingResource=true
       - Replace=true
       - ServerSideApply=true
+      - PruneLast=true
   ignoreDifferences:
     - group: monitoring.coreos.com
       kind: Prometheus
-      jsonPointers:
-        - /status
-        - /spec/enableOTLPReceiver
+      jsonPointers: ["/status"]
     - group: monitoring.coreos.com
       kind: Alertmanager
-      jsonPointers:
-        - /status
+      jsonPointers: ["/status"]
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
-    - group: batch
-      kind: Job
-      name: monitoring-kube-prometheus-admission-create
-    - group: admissionregistration.k8s.io
-      kind: ValidatingWebhookConfiguration
-      name: monitoring-kube-prometheus-admission
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRole
-      name: monitoring-kube-prometheus-admission
-    - group: rbac.authorization.k8s.io
-      kind: ClusterRoleBinding
-      name: monitoring-kube-prometheus-admission
