@@ -17,7 +17,7 @@ spec:
     spec:
       serviceAccountName: node-problem-detector
       priorityClassName: lakeshirts-critical
-      hostNetwork: true
+      # hostNetwork: true
       tolerations:
         - operator: Exists
           effect: NoSchedule
@@ -31,7 +31,6 @@ spec:
           command:
             - /node-problem-detector
             - --logtostderr
-            # Use journald on Alpine (since /var/log/messages may not exist)
             - --config.system-log-monitor=/config/kernel-monitor.json,/config/docker-monitor.json
             - --config.system-stats-monitor=/config/system-stats-monitor.json
             - --config.custom-plugin-monitor=/config/custom-plugin-monitor.json
