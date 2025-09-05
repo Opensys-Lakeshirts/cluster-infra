@@ -109,6 +109,7 @@ spec:
       kind: Prometheus
       jsonPointers:
         - /status
+        - /spec/enableOTLPReceiver
     - group: monitoring.coreos.com
       kind: Alertmanager
       jsonPointers:
