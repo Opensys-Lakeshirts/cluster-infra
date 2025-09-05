@@ -12,8 +12,8 @@ spec:
     targetRevision: HEAD
     path: .
   destination:
-    server: https://kubernetes.default.svc
-    namespace: cert-manager
+    server: https://kubernetes.default.svc   # <--- required
+    namespace: cert-manager                  # even though CRDs are cluster-scoped
   syncPolicy:
     automated:
       prune: true
