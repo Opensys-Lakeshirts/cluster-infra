@@ -17,9 +17,26 @@ spec:
           defaultIssuerName: letsencrypt-prod
           defaultIssuerKind: ClusterIssuer
           defaultIssuerGroup: cert-manager.io
+
+        # Force correct image arch
+        image:
+          repository: quay.io/jetstack/cert-manager-controller
+          tag: v1.18.1
+          # optional but recommended
+          pullPolicy: IfNotPresent
+
+        cainjector:
+          image:
+            repository: quay.io/jetstack/cert-manager-cainjector
+            tag: v1.18.1
+
+        webhook:
+          image:
+            repository: quay.io/jetstack/cert-manager-webhook
+            tag: v1.18.1
   destination:
-    server: https://kubernetes.default.svc   # <--- required
-    namespace: cert-manager                  # <--- required
+    server: https://kubernetes.default.svc
+    namespace: cert-manager
   syncPolicy:
     automated:
       prune: true
