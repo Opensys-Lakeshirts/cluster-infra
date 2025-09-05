@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: ingress-controller
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://haproxytech.github.io/helm-charts
+    chart: kubernetes-ingress
+    targetRevision: 1.44.0
+    helm:
+      values: |
+        controller:
+          ingressClassResource:
+            default: true
+            name: haproxy
+          ingressClass: haproxy
+
+          service:
+            type: LoadBalancer
+            annotations:
+              metallb.universe.tf/address-pool: default
+            labels:
+              app.kubernetes.io/name: kubernetes-ingress
+              app.kubernetes.io/instance: ingress-controller
+
+          # ---- Recommended production settings ----
+          config:
+            syslog-endpoint: "stdout"          # send logs to stdout for aggregation
+            ssl-redirect: "true"               # force HTTP -> HTTPS
+            ssl-dh-param: "auto"               # generate secure DH params
+            tune.ssl.default-dh-param: "2048"  # stronger SSL
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          podDisruptionBudget:
+            enabled: true
+            minAvailable: 1
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: ingress-controller
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
