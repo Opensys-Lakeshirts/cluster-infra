@@ -10,4 +10,5 @@ resources:
   - ../../infrastructure/monitoring/overlays/dev
   - ../../infrastructure/vault/overlays/dev
   - ../../infrastructure/kasten-io/overlays/dev
-  - ../../infrastructure/node-problem-detector/overlays/dev   # ✅ only here
+  - ../../infrastructure/node-problem-detector/overlays/dev # ✅ only here
+  - ../../infrastructure/metrics-server/overlays/dev  
