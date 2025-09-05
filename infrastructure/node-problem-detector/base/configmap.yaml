@@ -9,11 +9,10 @@ metadata:
 data:
   kernel-monitor.json: |
     {
-      "plugin": "journald",
+      "plugin": "filelog",
       "pluginConfig": {
-        "source": "kernel"
+        "logPath": "/var/log/messages"
       },
-      "logPath": "/var/log/journal",
       "lookback": "5m",
       "bufferSize": 10,
       "source": "kernel-monitor",
@@ -33,18 +32,18 @@ data:
     }
   docker-monitor.json: |
     {
-      "plugin": "journald",
+      "plugin": "filelog",
       "pluginConfig": {
-        "source": "dockerd"
-      },      "logPath": "/var/log/journal",
-      "lookback": "5m", 
+        "logPath": "/var/log/messages"
+      },
+      "lookback": "5m",
       "bufferSize": 10,
       "source": "docker-monitor",
       "conditions": [],
       "rules": [
         {
           "type": "temporary",
-          "reason": "DockerHung", 
+          "reason": "DockerHung",
           "pattern": "Task blocked for more than .*"
         }
       ]
