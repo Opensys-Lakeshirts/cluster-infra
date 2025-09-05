@@ -116,3 +116,15 @@ spec:
         - /status
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition
+    - group: batch
+      kind: Job
+      name: monitoring-kube-prometheus-admission-create
+    - group: admissionregistration.k8s.io
+      kind: ValidatingWebhookConfiguration
+      name: monitoring-kube-prometheus-admission
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRole
+      name: monitoring-kube-prometheus-admission
+    - group: rbac.authorization.k8s.io
+      kind: ClusterRoleBinding
+      name: monitoring-kube-prometheus-admission
