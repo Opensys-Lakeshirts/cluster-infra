@@ -4,13 +4,13 @@ metadata:
   name: cert-manager-crds
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
-    repoURL: https://github.com/cert-manager/cert-manager.git
-    targetRevision: v1.18.1
-    path: deploy/crds
+    repoURL: https://github.com/cert-manager/cert-manager/releases/download/v1.18.1/cert-manager.crds.yaml
+    targetRevision: HEAD
+    path: .
   destination:
     server: https://kubernetes.default.svc
     namespace: cert-manager
