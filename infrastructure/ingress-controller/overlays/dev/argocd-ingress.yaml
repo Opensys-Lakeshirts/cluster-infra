@@ -17,13 +17,23 @@ spec:
             name: haproxy
           ingressClass: haproxy
 
+          # Disable the default service (cloud LB style)
           service:
-            type: LoadBalancer
-            annotations:
-              metallb.universe.tf/address-pool: default
-            labels:
-              app.kubernetes.io/name: kubernetes-ingress
-              app.kubernetes.io/instance: ingress-controller
+            enabled: false
+
+          # Create a MetalLB-backed service
+          extraServices:
+            - name: ingress-controller-lb
+              type: LoadBalancer
+              annotations:
+                metallb.universe.tf/address-pool: default
+              ports:
+                - name: http
+                  port: 80
+                  targetPort: 80
+                - name: https
+                  port: 443
+                  targetPort: 443
 
           # ---- Recommended production settings ----
           config:
@@ -31,6 +41,7 @@ spec:
             ssl-redirect: "true"               # force HTTP -> HTTPS
             ssl-dh-param: "auto"               # generate secure DH params
             tune.ssl.default-dh-param: "2048"  # stronger SSL
+
           resources:
             requests:
               cpu: 100m
@@ -38,6 +49,7 @@ spec:
             limits:
               cpu: 500m
               memory: 512Mi
+
           podDisruptionBudget:
             enabled: true
             minAvailable: 1
