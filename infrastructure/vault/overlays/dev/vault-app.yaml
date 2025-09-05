@@ -1,0 +1,103 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://helm.releases.hashicorp.com
+    chart: vault
+    targetRevision: 0.30.1
+    helm:
+      values: |
+        global:
+          enabled: true
+          tlsDisable: true
+
+        server:
+          ha:
+            enabled: true
+            replicas: 3   # 3 Vault pods → each gets its own PVC
+            raft:
+              enabled: true
+              setNodeId: true
+              config: |
+                ui = true
+
+                listener "tcp" {
+                  tls_disable = 1
+                  address = "[::]:8200"
+                  cluster_address = "[::]:8201"
+                }
+
+                storage "raft" {
+                  path = "/vault/data"
+                }
+
+                service_registration "kubernetes" {}
+                disable_mlock = true
+
+          # Persistent Raft storage (each pod gets its own PVC)
+          dataStorage:
+            enabled: true
+            storageClass: managed-csi
+            size: 8Gi
+
+          # Allow init containers to chown/fix permissions
+          volumePermissions:
+            enabled: true
+
+          # Non-root security context
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+
+          service:
+            type: ClusterIP
+            port: 8200
+
+          ingress:
+            enabled: true
+            ingressClassName: haproxy
+            annotations:
+              haproxy.org/backend-protocol: "http"
+              haproxy.org/check: "true"
+              haproxy.org/check-http: "/v1/sys/health"
+            hosts:
+              - host: vault.dr.example.corp
+                paths:
+                  - /
+            tls:
+              - hosts:
+                  - vault.dr.example.corp
+                secretName: vault-dr-tls
+
+          # Ensure pods spread across nodes
+          affinity: |
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchLabels:
+                      app.kubernetes.io/name: vault
+                      app.kubernetes.io/instance: vault
+                      component: server
+                  topologyKey: kubernetes.io/hostname
+
+        ui:
+          enabled: true
+
+        injector:
+          enabled: false
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true   # auto-recreate if immutable fields change
