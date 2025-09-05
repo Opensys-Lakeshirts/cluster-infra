@@ -2,8 +2,6 @@ apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: kyverno
-  annotations:
-    argocd.argoproj.io/hook-delete-policy: HookSucceeded
   namespace: argocd
 spec:
   project: default
@@ -26,9 +24,9 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - Replace=true
+      - DisableValidation=true
   ignoreDifferences:
   - group: admissionregistration.k8s.io
     kind: MutatingWebhookConfiguration
     jsonPointers:
     - /webhooks/0/clientConfig/caBundle
-
